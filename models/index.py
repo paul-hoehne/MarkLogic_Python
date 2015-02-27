@@ -1,9 +1,15 @@
 __author__ = 'phoehne'
 
+from .utilities.validators import validate_index_type, validate_boolean, validate_index_invalid_value_actions
+
 
 class ElementRange:
     def __init__(self, localname, scalar_type=u'string', namespace_uri=None, collation=None,
                  range_value_positions=False, invalid_values=u'reject'):
+        validate_index_type(scalar_type)
+        validate_boolean(range_value_positions)
+        validate_index_invalid_value_actions(invalid_values)
+
         self.config = {
             u"scalar-type": scalar_type,
             u'namespace-uri': '',
@@ -21,6 +27,10 @@ class ElementRange:
 class RangeElementAttribute:
     def __init__(self, element_name, attribute_name, scalar_type=u'string', element_namespace=None,
                  attribute_namespace=None, collation=None, range_value_positions=False, invalid_values=u'reject'):
+        validate_index_type(scalar_type)
+        validate_boolean(range_value_positions)
+        validate_index_invalid_value_actions(invalid_values)
+
         self.config = {
             u"scalar-type": scalar_type,
             u'collation': u'',

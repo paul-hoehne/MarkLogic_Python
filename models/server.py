@@ -1,6 +1,5 @@
 __author__ = 'phoehne'
 
-import socket
 import requests
 import json
 

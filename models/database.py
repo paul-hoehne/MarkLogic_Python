@@ -2,9 +2,9 @@ __author__ = 'phoehne'
 
 import requests
 import json
-from models.forest import Forest
-from models.utilities import files
-from models import index
+from .forest import Forest
+from .utilities import files
+from .index import RangeElementAttribute, ElementRange
 
 class Database:
     def __init__(self, name):
