@@ -124,7 +124,8 @@ $ git rebase upstream/master
 
 There currently aren't any automated tests. This section will be updated when
 there are. In the meantime, please do your best to make sure your changes do
-something good while not breaking existing features. 
+something good while not breaking existing features. Run example.py to ensure
+that it still works correctly.
 
 #### Push your changes
 
