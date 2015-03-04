@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: marklogic
+Version: 0.0.1
+Summary: MarkLogic package for maintaining servers
+Home-page: http://github.com/paul-hoehne/MarkLogic_Python/
+Author: Paul Hoehne
+Author-email: paul.hoehne@marklogic.com
+License: Apache
+Description: UNKNOWN
+Keywords: MarkLogic rest management
+Platform: any
