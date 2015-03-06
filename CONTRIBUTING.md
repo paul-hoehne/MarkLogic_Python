@@ -7,6 +7,10 @@ through the process.
  - [Issues and Bugs](#issue)
  - [Feature Requests](#feature)
  - [Submission Guidelines](#submit)
+
+Note that I have no idea if you're using this and enjoying it or suffering through it.
+If you contact me through the issue tracker I'll have a better idea of what's going
+on.  So please, don't feel shy about contacting me.
  
 ## <a name="question"></a> Got a Question or Problem?
 
@@ -17,12 +21,14 @@ tag](http://stackoverflow.com/tags/marklogic).
 ## <a name="issue"></a> Found an Issue?
 If you find a bug in the source code or a mistake in the documentation, you can
 help by submitting an issue to the [issue tracker][]. Even better you can 
-submit a Pull Request with a fix for the issue you filed.
+submit a Pull Request with a fix for the issue you filed. 
 
 ## <a name="feature"></a> Want a Feature?
 You can request a new feature by submitting an issue to the 
 [issue tracker][].  If you would like to implement a new  feature then first 
 create a new issue and discuss it with one of our project maintainers.
+
+
 
 ## <a name="submit"></a> Submission Guidelines
 

@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+#
+# Note that this code was taken from an example on using PyPi.
+#
 
 __author__ = 'phoehne'
 
@@ -40,5 +43,4 @@ setup(
     keywords = "MarkLogic rest management",
     url = "http://github.com/paul-hoehne/MarkLogic_Python/",   # project home page, if any
 
-    # could also include long_description, download_url, classifiers, etc.
 )
