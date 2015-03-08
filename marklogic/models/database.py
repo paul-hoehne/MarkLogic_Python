@@ -1090,7 +1090,7 @@ class Database:
 
         :return:Preload mapped replica forest information
         """
-        self.config[u'preload-replica-mapped-data']
+        return self.config[u'preload-replica-mapped-data']
 
     def set_range_index_optimize(self, which=u'facet-time'):
         """
@@ -1410,7 +1410,7 @@ class Database:
         :return:The database object
         """
         uri = "http://{0}:{1}/manage/v2/databases/{2}/properties".format(connection.host, connection.management_port,
-                                                              self.config[u'database-name'])
+                                                                         self.config[u'database-name'])
         response = requests.put(uri, json=self.config, auth=connection.auth)
 
         if response.status_code > 299:
@@ -1442,7 +1442,7 @@ class Database:
 
         return self
 
-    def load_file(self, connection, path, uri, collections=[], content_type="application/json"):
+    def load_file(self, connection, path, uri, collections=None, content_type="application/json"):
         """
         Load a given file into a given database.
 
@@ -1455,8 +1455,10 @@ class Database:
         """
         doc_url = "http://{0}:{1}/v1/documents?uri={2}&database={3}".format(connection.host, connection.port, uri,
                                                                             self.config[u'database-name'])
-        for collection in collections:
-            doc_url += ("&collection=" + collection)
+
+        if collections is not None:
+            for collection in collections:
+                doc_url += ("&collection=" + collection)
 
         with open(path) as data_file:
             file_data = data_file.read()
@@ -1467,7 +1469,7 @@ class Database:
 
         return self
 
-    def load_directory_files(self, connection, path, prefix="/", collections=[], content_type="application/json"):
+    def load_directory_files(self, connection, path, prefix="/", collections=None, content_type="application/json"):
         """
         Load all the given files in a directory.  It will combine the prefix with the filename to generate
         a uri for the file on the server.
@@ -1485,7 +1487,7 @@ class Database:
                            collections=collections, content_type=content_type)
         return self
 
-    def load_directory(self, connection, path, prefix="/", collections=[], content_type="application/json"):
+    def load_directory(self, connection, path, prefix="/", collections=None, content_type="application/json"):
         """
         Load all the file in a directory, preserving the partial path between the directory root and the
         file.  So a file located at /data/files/myfile.xml, with a prefix parameter of '/data' will be
@@ -1513,7 +1515,8 @@ class Database:
         :param connection:The server connection
         :return:The database configuration
         """
-        uri = "http://{0}:{1}/manage/v2/databases/{2}/properties".format(connection.host, connection.management_port, name)
+        uri = "http://{0}:{1}/manage/v2/databases/{2}/properties".format(connection.host, connection.management_port,
+                                                                         name)
         response = requests.get(uri, auth=connection.auth, headers={u'accept': u'application/json'})
         if response.status_code > 299:
             raise response
