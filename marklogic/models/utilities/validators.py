@@ -104,3 +104,7 @@ def validate_merge_priority_options(raw_val):
 def validate_assignment_policy_options(raw_val):
     if raw_val not in ['bucket', 'statistical', 'range', 'legacy']:
         raise ValidationError("Assignment policy option is not a valid value", repr(raw_val))
+
+
+def validate_custom(message):
+    raise ValidationError("Validation error", repr(message))

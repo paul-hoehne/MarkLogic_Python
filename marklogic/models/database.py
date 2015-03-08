@@ -22,7 +22,7 @@ from .forest import Forest
 from .utilities import files
 from .utilities.validators import *
 
-from .index import RangeElementAttribute, ElementRange
+from .index import ElementAttributeRange, ElementRange, FieldRange
 
 """
 Database related classes for manipulating MarkLogic databases
@@ -34,7 +34,7 @@ class Database:
     methods to set/get database attributes.  The use of methods will
     allow IDEs with tooling to provide auto-completion hints.
     """
-    def __init__(self, name):
+    def __init__(self, name, hostname=None):
         """
         Initialize the database object to either create a database or
         lookup the existing database information
@@ -52,6 +52,9 @@ class Database:
             u'enabled': True,
             u'language': u'en'
         }
+
+        if hostname is not None:
+            self.hostname = hostname
 
     def set_database_name(self, name):
         """
@@ -1349,6 +1352,34 @@ class Database:
         """
         return self.config[u'assignment-policy']
 
+    def add_path_namespace(self, prefix, namespace):
+        """
+        Add a path namespace for use by field paths.
+
+        :param prefix: The prefix to use in field (i.e. 'foo')
+        :param namespace: The namespace uri (i.e. 'http://bar.com')
+        :return: The database object
+        """
+        if u'path-namespaces' not in self.config:
+            self.config[u'path-namespaces'] = []
+
+        self.config[u'path-namespaces'].append({
+            u'prefix': prefix,
+            u'namespace-uri': namespace
+        })
+        return self
+
+    def path_namespaces(self):
+        """
+        Return the array path namespaces defined or None, if no path namespaces
+        are defined.
+
+        :return:The path namespaces or none
+        """
+        if u'path-namespaces' not in self.config:
+            return None
+        return self.config[u'path-namespaces']
+
     def create(self, connection):
         """
         Create a new database defined by these parameters on the given connection.
@@ -1360,6 +1391,8 @@ class Database:
 
         for forest_name in self.config[u'forest']:
             new_forest = Forest(forest_name)
+            if self.hostname is not None:
+                new_forest.set_host(self.hostname)
             new_forest.create(connection)
 
         response = requests.post(uri, json=self.config, auth=connection.auth)
@@ -1498,13 +1531,44 @@ class Database:
         :return:The database configuration.
         """
         index_name = "range-element-index"
-        if type(index_def) is ElementRange:
+        if index_def.__class__ == ElementRange:
             index_name = u'range-element-index'
-        elif type(index_def) is RangeElementAttribute:
+        elif index_def.__class__ == ElementAttributeRange:
             index_name = u'range-element-attribute-index'
+        elif index_def.__class__ == FieldRange:
+            index_name = u'range-field-index'
 
-        if not index_name in self.config:
+        if index_name not in self.config:
             self.config[index_name] = []
 
         self.config[index_name].append(index_def.config)
         return self
+
+    def field_range_index(self, index=None):
+        if index is None and u'range-field-index' in self.config:
+            result = []
+            for field in self.config[u'range-field-index']:
+                temp = FieldRange("", "")
+                temp.config = field
+                result.append(temp)
+            return result
+        elif u'range-field-index' in self.config and len(self.config[u'range-field-index']) > index:
+            temp = FieldRange("", "")
+            temp.config = self.config[u'range-field-index'][index]
+            return temp
+        return None
+
+    def add_field(self, field):
+        if u'field' not in self.config:
+            self.config[u'field'] = []
+
+        self.config[u'field'].append(field.config)
+
+        return self
+
+    def fields(self, field_idx):
+        if u'fields' not in self.config:
+            return None
+        if field_idx >= len(self.config[u'fields']):
+            return None
+        return self.config[u'fields'][field_idx]

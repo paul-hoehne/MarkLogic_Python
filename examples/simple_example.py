@@ -1,11 +1,10 @@
 __author__ = 'phoehne'
 
 from requests.auth import HTTPDigestAuth
-from models.database import Database
-from models.connection import Connection
-from models.server import HttpServer
-from models.index import ElementRange
-from models.index import RangeElementAttribute
+from marklogic.models.database import Database
+from marklogic.models.connection import Connection
+from marklogic.models.server import HttpServer
+from marklogic.models.index import ElementRange, ElementAttributeRange
 
 conn = Connection("localhost", HTTPDigestAuth("admin", "admin"))
 
@@ -17,7 +16,7 @@ modules.create(conn)
 
 db = Database.lookup("test-one", conn)
 db.add_index(ElementRange("order-id", u'int'))
-db.add_index(RangeElementAttribute("customer", "id", scalar_type=u'int', element_namespace="http://foo.bar.com"))
+db.add_index(ElementAttributeRange("customer", "id", scalar_type=u'int', element_namespace="http://foo.bar.com"))
 db.save(conn)
 
 srvr = HttpServer("test-one-http", 8400)

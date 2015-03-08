@@ -17,5 +17,5 @@
 from .connection import Connection
 from .database import Database
 from .forest import Forest
-from .index import ElementRange, RangeElementAttribute
+from .index import ElementRange, ElementAttributeRange, FieldRange, Field, FieldReference
 from .server import HttpServer, XdbcServer
