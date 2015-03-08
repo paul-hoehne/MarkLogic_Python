@@ -13,8 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# File History
+# ------------
+#
+# Paul Hoehne       03/01/2015     Initial development
+# Paul Hoehne       03/08/2014     Added support for field indexes
 
-__author__ = 'phoehne'
 
 import requests
 import json

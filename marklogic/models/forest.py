@@ -13,8 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-__author__ = 'phoehne'
+# File History
+# ------------
+#
+# Paul Hoehne       03/01/2015     Initial development
+#
 
 import socket
 import requests
