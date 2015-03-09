@@ -19,6 +19,9 @@
 # Paul Hoehne       03/03/2015     Initial development
 #
 
+import os
+import urllib2
+import re
 
 
 """
@@ -35,6 +38,23 @@ class MLCPLoader():
 
     def load(self, conn):
         pass
+
+    def clear_directory(self):
+        if os.path.isdir(".mlcp"):
+            os.popen("rm -rf .mlcp")
+
+    def download_mlcp(self):
+        os.mkdir(".mlcp")
+        request = urllib2.urlopen("http://developer.marklogic.com/download/binaries/mlcp/mlcp-Hadoop2-1.3-1-bin.zip")
+        with open(".mlcp/mlcp.zip", "wb") as bin_file:
+            data = request.read()
+            bin_file.write(data)
+
+        os.popen("cd .mlcp; unzip mlcp.zip")
+        files = os.listdir(".mlcp")
+        for file in files:
+            if re.match(r"[\w\-]+(\d\.\d).*", file):
+                os.popen("cd .mlcp; mv {0} mlcp; rm mlcp.zip".format(file))
 
 
 class Watcher():
