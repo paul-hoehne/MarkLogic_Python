@@ -21,7 +21,11 @@
 
 import unittest
 import os
+import time
 from marklogic.tools import MLCPLoader
+from marklogic.models import Connection
+from marklogic.recipes import SimpleDatabase
+from requests.auth import HTTPDigestAuth
 
 class TestMLCPDownload(unittest.TestCase):
 
@@ -45,6 +49,27 @@ class TestMLCPDownload(unittest.TestCase):
 
         self.assertFalse(os.path.isdir(".mlcp"))
 
+    def test_load_data(self):
+        simpledb = SimpleDatabase("exmaple_app", port=8400)
 
+        auth = HTTPDigestAuth("admin", "admin")
+        conn = Connection("192.168.57.141", auth)
 
+        exampledb = simpledb.create(conn)
 
+        loader = MLCPLoader()
+        loader.download_mlcp()
+
+        try:
+            loader.load_directory(conn, exampledb[u'content'], "../../examples/data",
+                                  collections=["example1"], prefix="/test/data1")
+            self.assertIsNotNone(exampledb[u'content'].get_document(conn, "/test/data1/purchases/december/purchase-001.json"))
+            self.assertIsNotNone(exampledb[u'content'].get_document(conn, "/test/data1/customer-001.json"))
+
+        finally:
+            exampledb[u'server'].remove(conn)
+            print("Pausing 15 seconds for server restart")
+            time.sleep(15)
+
+            exampledb[u'modules'].remove(conn)
+            exampledb[u'content'].remove(conn)

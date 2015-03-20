@@ -30,7 +30,7 @@ class Forest:
             u'host': socket.gethostname().lower()
         }
 
-    def  set_host(self, host='localhost'):
+    def set_host(self, host='localhost'):
         self.config[u'host'] = host
         return self
 
@@ -53,6 +53,9 @@ class Forest:
     def set_availability(self, which='online'):
         self.config[u'availability'] = which
         return self
+
+    def name(self):
+        return self.config[u'forest-name']
 
     def create(self, connection):
         uri = "http://{0}:{1}/manage/v2/forests".format(connection.host, connection.management_port)

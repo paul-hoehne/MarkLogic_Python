@@ -133,6 +133,17 @@ class Database:
         """
         return self.config[u'triggers-database']
 
+    def set_forests(self, forests):
+        """
+        Set the forest names for the database.  The forest with that name
+        will be created when the database is created.
+
+        :param forests: A list of forest names
+        :return:The database object
+        """
+        self.config[u'forest'] = forests
+        return self
+
     def add_forest(self, forest):
         """
         Add a new forest name to the database.  The forest with that name
@@ -1579,3 +1590,15 @@ class Database:
         if field_idx >= len(self.config[u'fields']):
             return None
         return self.config[u'fields'][field_idx]
+
+    def get_document(self, conn, document_uri, content_type='*/*'):
+        doc_url = "http://{0}:{1}/v1/documents?uri={2}&database={3}".format(conn.host, conn.port, document_uri,
+                                                                            self.config[u'database-name'])
+
+        response = requests.get(doc_url, auth=conn.auth, headers={'accept': content_type})
+        if response.status_code == 404:
+            return None
+        elif response.status_code == 200:
+            return response.text
+        else:
+            raise Exception(response.text)

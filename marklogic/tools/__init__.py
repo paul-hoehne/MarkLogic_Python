@@ -56,6 +56,26 @@ class MLCPLoader():
             if re.match(r"[\w\-]+(\d\.\d).*", file):
                 os.popen("cd .mlcp; mv {0} mlcp; rm mlcp.zip".format(file))
 
+    def load_directory(self, conn, database, data_directory, collections=None, prefix=''):
+        command_path = ".mlcp/mlcp/bin/mlcp.sh"
+
+        if collections:
+            collections_command = "-output_collections \"{0}\"".format(",".join(collections))
+        else:
+            collections_command = ''
+
+        command_line = "{0} import -username {1} -password {2} -host {3} -port {4} -database {5} {6} " \
+                       "-input_file_path {7} -output_uri_replace \"{8},'{9}'\""
+
+        run_line = command_line.format(command_path, conn.auth.username, conn.auth.password, conn.host,
+                                       conn.port, database.database_name(), collections_command, data_directory,
+                                       os.path.abspath(data_directory), prefix)
+        with os.popen(run_line) as in_file:
+            for line in in_file:
+                print(line.rstrip())
+
+
+
 
 class Watcher():
     """

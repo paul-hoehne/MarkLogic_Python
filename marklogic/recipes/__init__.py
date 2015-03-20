@@ -55,9 +55,9 @@ class SimpleDatabase(Quickstart):
         self._app_port = port
         self._http_server = app_name + "_http_" + str(port)
         self._forests = [self._db_name + "_forest_" + str(i + 1) for i in range(0, forests)]
-        self._modules_forest = [self._modules_db_name] + "_forest"
+        self._modules_forest = self._modules_db_name + "_forest"
 
-    def create(self, conn):
+    def create(self, conn, hostname='localhost.localdomain'):
         """
         Connects to the server and creates the relevant artifacts, including the database,
         the modules database, and the HTTP server.
@@ -65,11 +65,10 @@ class SimpleDatabase(Quickstart):
         :param conn: The server connection
         :return:A map containing the content db, the modules db and the HTTP server.
         """
-        data_database = Database(self._db_name)
-        data_database.add_forest([Forest(forest_name) for forest_name in self._forests])
+        data_database = Database(self._db_name, hostname)
+        data_database.set_forests(self._forests)
 
-        modules_database = Database(self._modules_db_name)
-        modules_database.add_forest(Forest(self._modules_forest))
+        modules_database = Database(self._modules_db_name, hostname)
 
         server = HttpServer(self._http_server, self._app_port, self._db_name)
         server.set_modules_database(self._modules_db_name)
