@@ -8,7 +8,7 @@ from __future__ import unicode_literals, print_function, absolute_import
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#   http://www.apache.org/licenses/LICENSE-2.0
+#   http://www.apache.org/licenses/LICENSE-2.0#
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,19 +19,16 @@ from __future__ import unicode_literals, print_function, absolute_import
 # File History
 # ------------
 #
-# Paul Hoehne       03/25/2015     Initial development
+# Paul Hoehne       03/26/2015     Initial development
 #
 
 import unittest
 import os
-from marklogic.models import Database, Connection, Host
+from marklogic.models import Connection, Host
 from requests.auth import HTTPDigestAuth
 
-class TestCreate(unittest.TestCase):
-    """
-    Basic creation test function.
 
-    """
+class TestHost(unittest.TestCase):
     def setUp(self):
         """
         TODO: Might need to move this a common parent class.
@@ -62,35 +59,10 @@ class TestCreate(unittest.TestCase):
             self._password = 'admin'
             print("No MLPASS environment variable - using 'admin'")
 
-
-    def test_simple_create(self):
-        """
-        TODO: The hostname should come from the server's hostname
-
-        Test the basic create function.  Creates a database and then check to see that it
-        exists by getting the database configuration from the server.  It then destroys
-        the database.
-
-        :return: None
-        """
+    def test_list_hosts(self):
         conn = Connection(self._hostname, HTTPDigestAuth(self._admin, self._password))
+
         hosts = Host.list_hosts(conn)
-        db = Database("test-db", hosts[0].host_name())
+        assert len(hosts) > 0
 
-        db.create(conn)
-
-        validate_db = Database.lookup("test-db", conn)
-        try:
-            assert validate_db is not None
-            assert validate_db.database_name() == 'test-db'
-
-        finally:
-            validate_db.remove(conn)
-            validate_db = Database.lookup("test-db", conn)
-            assert validate_db is None
-
-    def test_no_database_found(self):
-        conn = Connection(self._hostname, HTTPDigestAuth(self._admin, self._password))
-        db = Database.lookup("No-Such-Database", conn)
-
-        assert db is None
+        assert hosts[0] is not None
