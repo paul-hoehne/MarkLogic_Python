@@ -59,6 +59,8 @@ class Database:
 
         if hostname is not None:
             self.hostname = hostname
+        else:
+            self.hostname = None
 
     def set_database_name(self, name):
         """
@@ -1533,10 +1535,13 @@ class Database:
         uri = "http://{0}:{1}/manage/v2/databases/{2}/properties".format(connection.host, connection.management_port,
                                                                          name)
         response = requests.get(uri, auth=connection.auth, headers={u'accept': u'application/json'})
-        if response.status_code > 299:
-            raise response
-        result = Database("temp")
-        result.config = json.loads(response.text)
+
+        result = None
+        if response.status_code == 200:
+            result = Database("temp")
+            result.config = json.loads(response.text)
+        elif response.status_code != 404:
+            raise Exception(response)
 
         return result
 
