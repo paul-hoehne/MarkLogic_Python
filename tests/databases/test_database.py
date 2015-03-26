@@ -20,6 +20,7 @@ from __future__ import unicode_literals, print_function, absolute_import
 # ------------
 #
 # Paul Hoehne       03/25/2015     Initial development
+# Paul Hoehne       03/26/2015     Adding dynamic lookup of host name
 #
 
 import unittest
