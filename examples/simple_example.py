@@ -1,17 +1,16 @@
 __author__ = 'phoehne'
 
 from requests.auth import HTTPDigestAuth
-from marklogic.models.database import Database
-from marklogic.models.connection import Connection
-from marklogic.models.server import HttpServer
-from marklogic.models.index import ElementRange, ElementAttributeRange
+from marklogic.models import Database, Connection, Host, HttpServer, ElementRange, ElementAttributeRange
 
-conn = Connection("localhost", HTTPDigestAuth("admin", "admin"))
+conn = Connection("192.168.57.141", HTTPDigestAuth("admin", "admin"))
 
-db = Database("test-one")
+server_hostname = hosts = Host.list_hosts(conn)[0].host_name()
+
+db = Database("test-one", server_hostname)
 db.create(conn).load_file(conn, "example_doc.json", "/test/document.json", ["example", "collection"])
 
-modules = Database("test-one-modules")
+modules = Database("test-one-modules", server_hostname)
 modules.create(conn)
 
 db = Database.lookup("test-one", conn)

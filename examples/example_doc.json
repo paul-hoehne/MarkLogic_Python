@@ -1,0 +1,9 @@
+{
+  "invoice-date": "2014-05-01T15:32:00.000000",
+  "customer-id": 1234,
+  "items": [
+    { "item-id": 234, "item-name": "Left handed smoke shifter", "quantity": 2, "price": 57.42 },
+    { "item-id": 345, "item-name": "Mr. Fusion", "quantity": 1, "price": 157.00 },
+    { "item-id": 453, "item-name": "Primary Power Coupling", "quantity": 1, "price": 2432.52 }
+  ]
+}
