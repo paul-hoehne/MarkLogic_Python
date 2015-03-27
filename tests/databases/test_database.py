@@ -27,42 +27,13 @@ import unittest
 import os
 from marklogic.models import Database, Connection, Host
 from requests.auth import HTTPDigestAuth
+from resources import TestConnection as tc
 
-class TestCreate(unittest.TestCase):
+class TestDatabase(unittest.TestCase):
     """
     Basic creation test function.
 
     """
-    def setUp(self):
-        """
-        TODO: Might need to move this a common parent class.
-
-        Check to see that the following enviornment variables are set to run tests:
-        o  MLHOST  - the name of the MarkLogic server
-        o  MLADMIN - the admin user of the MarkLogic server
-        o  MLPASS  - the admin user password.
-
-        It defaults to 'localhost' for the host, and admin/admin for the
-        username/passwrd.
-        """
-        if 'MLHOST' in os.environ:
-            self._hostname = os.environ['MLHOST']
-        else:
-            self._hostname = 'localhost'
-            print("No MLHOST environment variable - using 'localhost'")
-
-        if 'MLADMIN' in os.environ:
-            self._admin = os.environ['MLADMIN']
-        else:
-            self._admin = 'admin'
-            print("No MLADMIN environment variable - using 'admin'")
-
-        if 'MLPASS' in os.environ:
-            self._password = os.environ['MLPASS']
-        else:
-            self._password = 'admin'
-            print("No MLPASS environment variable - using 'admin'")
-
 
     def test_simple_create(self):
         """
@@ -74,7 +45,7 @@ class TestCreate(unittest.TestCase):
 
         :return: None
         """
-        conn = Connection(self._hostname, HTTPDigestAuth(self._admin, self._password))
+        conn = Connection(tc.hostname, HTTPDigestAuth(tc.admin, tc.password))
         hosts = Host.list_hosts(conn)
         db = Database("test-db", hosts[0].host_name())
 
@@ -82,16 +53,16 @@ class TestCreate(unittest.TestCase):
 
         validate_db = Database.lookup("test-db", conn)
         try:
-            assert validate_db is not None
-            assert validate_db.database_name() == 'test-db'
+            self.assertIsNotNone(validate_db)
+            self.assertEqual('test-db', validate_db.database_name())
 
         finally:
             validate_db.remove(conn)
             validate_db = Database.lookup("test-db", conn)
-            assert validate_db is None
+            self.assertIsNone(validate_db)
 
     def test_no_database_found(self):
-        conn = Connection(self._hostname, HTTPDigestAuth(self._admin, self._password))
+        conn = Connection(tc.hostname, HTTPDigestAuth(tc.admin, tc.password))
         db = Database.lookup("No-Such-Database", conn)
 
-        assert db is None
+        self.assertIsNone(db)

@@ -25,12 +25,13 @@ import json
 from .forest import Forest
 from .utilities import files
 from .utilities.validators import *
-
+from .utilities.exceptions import *
 from .index import ElementAttributeRange, ElementRange, FieldRange
 
 """
 Database related classes for manipulating MarkLogic databases
 """
+
 
 class Database:
     """
@@ -57,10 +58,7 @@ class Database:
             u'language': u'en'
         }
 
-        if hostname is not None:
-            self.hostname = hostname
-        else:
-            self.hostname = None
+        self.hostname = hostname
 
     def set_database_name(self, name):
         """
@@ -1414,7 +1412,7 @@ class Database:
 
         response = requests.post(uri, json=self.config, auth=connection.auth)
         if response.status_code > 299:
-            raise Exception(response.text)
+            raise UnexpectedManagementAPIResponse(response.text)
 
         return self
 
@@ -1431,7 +1429,7 @@ class Database:
         response = requests.put(uri, json=self.config, auth=connection.auth)
 
         if response.status_code > 299:
-            raise Exception(response.text)
+            raise UnexpectedManagementAPIResponse(response.text)
 
         return self
 
@@ -1447,7 +1445,7 @@ class Database:
         response = requests.delete(uri, auth=connection.auth)
 
         if response.status_code > 299 and not response.status_code == 404:
-            raise Exception(response.text)
+            raise UnexpectedManagementAPIResponse(response.text)
 
         for forest_name in self.config[u'forest']:
             forest_uri = uri = "http://{0}:{1}/manage/v2/forests/{2}?level=full".format(connection.host,
@@ -1455,7 +1453,7 @@ class Database:
                                                                                         forest_name)
             response = requests.delete(forest_uri, auth=connection.auth)
             if response.status_code > 299 and not response.status_code == 404:
-                raise Exception(response.text)
+                raise UnexpectedManagementAPIResponse(response.text)
 
         return self
 
@@ -1482,7 +1480,7 @@ class Database:
             response = requests.put(doc_url, data=file_data, auth=connection.auth,
                                     headers={'content-type': content_type})
             if response.status_code > 299:
-                raise Exception(response.text)
+                raise UnexpectedAPIResponse(response.text)
 
         return self
 
@@ -1541,7 +1539,7 @@ class Database:
             result = Database("temp")
             result.config = json.loads(response.text)
         elif response.status_code != 404:
-            raise Exception(response)
+            raise UnexpectedManagementAPIResponse(response.text)
 
         return result
 
@@ -1606,4 +1604,4 @@ class Database:
         elif response.status_code == 200:
             return response.text
         else:
-            raise Exception(response.text)
+            raise UnexpectedAPIResponse(response.text)

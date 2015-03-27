@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, print_function, absolute_import
-
 #
 # Copyright 2015 MarkLogic Corporation
 #
@@ -22,16 +19,28 @@ from __future__ import unicode_literals, print_function, absolute_import
 # Paul Hoehne       03/26/2015     Initial development
 #
 
-import unittest
-from marklogic.models import Connection, Host
-from requests.auth import HTTPDigestAuth
-from resources import TestConnection as tc
 
-class TestHost(unittest.TestCase):
+class MLClientException(Exception):
+    """
+    Base class for MarkLogic client exceptions.
 
-    def test_list_hosts(self):
-        conn = Connection(tc.hostname, HTTPDigestAuth(tc.admin, tc.password))
+    """
+    pass
 
-        hosts = Host.list_hosts(conn)
-        self.assertGreater(len(hosts), 0)
-        self.assertIsNotNone(hosts[0])
+
+class UnexpectedManagementAPIResponse(MLClientException):
+    """
+    This exception class is for exceptions that arise from unexpected management
+    API responses.
+
+    """
+    pass
+
+
+class UnexpectedAPIResponse(MLClientException):
+    """
+    This exception class is for exceptions that arise from unexpected REST api
+    responses when dealing with search or documents.
+
+    """
+    pass
