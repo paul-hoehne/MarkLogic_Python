@@ -27,6 +27,7 @@ from marklogic.models import Connection, Host
 from requests.auth import HTTPDigestAuth
 from resources import TestConnection as tc
 
+
 class TestHost(unittest.TestCase):
 
     def test_list_hosts(self):
