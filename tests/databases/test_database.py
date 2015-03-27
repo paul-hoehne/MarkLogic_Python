@@ -66,3 +66,13 @@ class TestDatabase(unittest.TestCase):
         db = Database.lookup("No-Such-Database", conn)
 
         self.assertIsNone(db)
+
+    def test_list_databases(self):
+        conn = Connection(tc.hostname, HTTPDigestAuth(tc.admin, tc.password))
+        databases = Database.list_databases(conn)
+
+        self.assertGreater(len(databases), 4)
+
+        db_names = [db.database_name() for db in databases]
+        self.assertTrue("Modules" in db_names)
+        self.assertTrue("Documents" in db_names)

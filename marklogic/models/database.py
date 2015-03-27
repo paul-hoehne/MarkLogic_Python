@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals, print_function, absolute_import
+
 #
 # Copyright 2015 MarkLogic Corporation
 #
@@ -1542,6 +1545,25 @@ class Database:
             raise UnexpectedManagementAPIResponse(response.text)
 
         return result
+
+    @classmethod
+    def list_databases(cls, connection):
+        uri = "http://{0}:{1}/manage/v2/databases".format(connection.host, connection.management_port)
+        response = requests.get(uri, auth=connection.auth, headers={'accept': 'application/json'})
+
+        if response.status_code == 200:
+            response_json = json.loads(response.text)
+            db_count = response_json['database-default-list']['list-items']['list-count']['value']
+
+            result = []
+            if db_count > 0:
+                for item in response_json['database-default-list']['list-items']['list-item']:
+                    result.append(Database.lookup(item['nameref'], connection))
+        else:
+            raise UnexpectedManagementAPIResponse(response.text)
+
+        return result
+
 
     def add_index(self, index_def):
         """
