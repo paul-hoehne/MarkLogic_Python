@@ -42,6 +42,11 @@ REST API.
 At this point you should be able to script away.  In the near future you'll be able to directly install using
 easy_isntall without first checking out the project.
 
+## Running Tests
+
+To run tests, edit the resources.py file.  Change the values of hostname, admin, and password to match the 
+values for your environment.  The tests reference these values to connect with your MarkLogic server.
+
 
 ## Support
 
