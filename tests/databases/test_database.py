@@ -24,7 +24,6 @@ from __future__ import unicode_literals, print_function, absolute_import
 #
 
 import unittest
-import os
 from marklogic.models import Database, Connection, Host
 from requests.auth import HTTPDigestAuth
 from resources import TestConnection as tc

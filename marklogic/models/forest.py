@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals, print_function, absolute_import
+
 #
 # Copyright 2015 MarkLogic Corporation
 #
@@ -22,6 +25,7 @@
 import socket
 import requests
 import json
+from .utilities.validators import validate_forest_availability
 
 """
 MarkLogic Forest support classes.
@@ -48,6 +52,14 @@ class Forest:
         self.config[u'host'] = host
         return self
 
+    def host(self):
+        """
+        Return the hostname for this forest
+
+        :return: The hostname
+        """
+        return self.config['host']
+
     def set_database(self, db='Documents'):
         """
         The database to which this forest belongs.
@@ -55,8 +67,16 @@ class Forest:
         :param db: A database name
         :return: The Forest object
         """
-        self.config[u'database'] = db
+        self.config['database'] = db
         return self
+
+    def database(self):
+        """
+        Return the database for the forest
+
+        :return: The asociated database
+        """
+        return self.config['database']
 
     def set_data_directory(self, datadir='/var/opt/MarkLogic/Data'):
         """
@@ -66,8 +86,16 @@ class Forest:
         :param datadir: The forest's data directory
         :return: The Forest object
         """
-        self.config[u'data-directory'] = datadir
+        self.config['data-directory'] = datadir
         return self
+
+    def data_directory(self):
+        """
+        Returns the data directory for the forest.
+
+        :return: The data directory path
+        """
+        return self.config['data-directory']
 
     def set_large_data_directory(self, datadir='/var/opt/MarkLogic/Big_Data'):
         """
@@ -77,8 +105,16 @@ class Forest:
         :param datadir: The forest's large data directory
         :return: The Forest object
         """
-        self.config[u'large-data-directory'] = datadir
+        self.config['large-data-directory'] = datadir
         return self
+
+    def large_data_directory(self):
+        """
+        Return the large data directory for the forest
+
+        :return:The large data directory path
+        """
+        return self.config['large-data-directory']
 
     def set_fast_data_directory(self, datadir='/var/opt/MarkLogic/Fast_Data'):
         """
@@ -88,8 +124,16 @@ class Forest:
         :param datadir: The forest's fast data directory
         :return: The Forest object
         """
-        self.config[u'fast-data-directory'] = datadir
+        self.config['fast-data-directory'] = datadir
         return self
+
+    def fast_data_directory(self):
+        """
+        Return the fast data directory for the forest.
+
+        :return:The fast data directory
+        """
+        return self.config['fast-data-directory']
 
     def set_availability(self, which='online'):
         """
@@ -98,8 +142,17 @@ class Forest:
         :param which: The availability of the forest
         :return: The Forest object
         """
-        self.config[u'availability'] = which
+        validate_forest_availability(which)
+        self.config['availability'] = which
         return self
+
+    def availability(self):
+        """
+        Returns the availability status for the forest.
+
+        :return: Availability status
+        """
+        return self.config[u'availability']
 
     def name(self):
         """
