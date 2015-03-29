@@ -26,6 +26,7 @@ import socket
 import requests
 import json
 from .utilities.validators import validate_forest_availability
+from .utilities.exceptions import UnexpectedManagementAPIResponse
 
 """
 MarkLogic Forest support classes.
@@ -34,23 +35,32 @@ MarkLogic Forest support classes.
 class Forest:
     """
     Encapsulates a MarkLogic forest.  Can be added to a database configuration to create forests
-    with specific options.
+    with specific options.  There are two types of attributes in Forest.  The properties can be
+    changed after creation.  The config is the non-mutable state that is configured when the forest
+    is created.
     """
-    def __init__(self, name):
-        self.config = {
-            u'forest-name': name,
-            u'host': socket.gethostname().lower()
+    def __init__(self, name, host=None, data_directory=None, large_data_directory=None, fast_data_directory=None):
+        self.properties = {
         }
 
-    def set_host(self, host='localhost'):
-        """
-        Set the hostname to use for the forest.
+        self.config = {
+            'forest-name': name
+        }
 
-        :param host: The server's host name
-        :return: The Forest object
-        """
-        self.config[u'host'] = host
-        return self
+        if data_directory:
+            self.config['data-directory'] = data_directory
+
+        if large_data_directory:
+            self.config['large-data-directory'] = large_data_directory
+
+        if fast_data_directory:
+            self.config['fast-data-directory'] = fast_data_directory
+
+        if host:
+            self.config['host'] = host
+        else:
+            self.config['host'] = socket.gethostname().lower()
+
 
     def host(self):
         """
@@ -78,17 +88,6 @@ class Forest:
         """
         return self.config['database']
 
-    def set_data_directory(self, datadir='/var/opt/MarkLogic/Data'):
-        """
-        The data directory where the forest's data will be stored.  It must be a valid path
-        on the server running MarkLogic.
-
-        :param datadir: The forest's data directory
-        :return: The Forest object
-        """
-        self.config['data-directory'] = datadir
-        return self
-
     def data_directory(self):
         """
         Returns the data directory for the forest.
@@ -97,17 +96,6 @@ class Forest:
         """
         return self.config['data-directory']
 
-    def set_large_data_directory(self, datadir='/var/opt/MarkLogic/Big_Data'):
-        """
-        The forest's big data directory.  This must be a valid directory on the server where
-        MarkLogic is running.
-
-        :param datadir: The forest's large data directory
-        :return: The Forest object
-        """
-        self.config['large-data-directory'] = datadir
-        return self
-
     def large_data_directory(self):
         """
         Return the large data directory for the forest
@@ -115,17 +103,6 @@ class Forest:
         :return:The large data directory path
         """
         return self.config['large-data-directory']
-
-    def set_fast_data_directory(self, datadir='/var/opt/MarkLogic/Fast_Data'):
-        """
-        The forest's fast data directory.  This must be a valid directory on the server where
-        MarkLogic is running.
-
-        :param datadir: The forest's fast data directory
-        :return: The Forest object
-        """
-        self.config['fast-data-directory'] = datadir
-        return self
 
     def fast_data_directory(self):
         """
@@ -143,7 +120,7 @@ class Forest:
         :return: The Forest object
         """
         validate_forest_availability(which)
-        self.config['availability'] = which
+        self.properties['availability'] = which
         return self
 
     def availability(self):
@@ -152,7 +129,7 @@ class Forest:
 
         :return: Availability status
         """
-        return self.config[u'availability']
+        return self.properties['availability']
 
     def name(self):
         """
@@ -160,7 +137,7 @@ class Forest:
 
         :return: The forest name
         """
-        return self.config[u'forest-name']
+        return self.config['forest-name']
 
     def create(self, connection):
         """
@@ -170,11 +147,15 @@ class Forest:
         :return: The Forest object
         """
         uri = "http://{0}:{1}/manage/v2/forests".format(connection.host, connection.management_port)
-        response = requests.post(uri, json=self.config, auth=connection.auth)
+        payload = {}
+        payload.update(self.properties)
+        payload.update(self.config)
+
+        response = requests.post(uri, json=payload, auth=connection.auth)
         if response.status_code > 299:
             raise Exception(response.text)
 
-        return self
+        return Forest.lookup(self.config['forest-name'], connection)
 
     def save(self, connection):
         """
@@ -184,7 +165,7 @@ class Forest:
         :return: The Forest object
         """
         uri = "http://{0}:{1}/manage/v2/forests/{2}/properties".format(connection.host, connection.management_port,
-                                                              self.config[u'forest-name'])
+                                                                       self.config['forest-name'])
         response = requests.put(uri, json=self.config, auth=connection.auth)
 
         if response.status_code > 299:
@@ -209,7 +190,7 @@ class Forest:
         return self
 
     @classmethod
-    def lookup(cls, name, connection):
+    def lookup(cls, name, conn):
         """
         Look up a forest's configuration from the MarkLogic server.
 
@@ -217,11 +198,26 @@ class Forest:
         :param connection: The connection to a MarkLogic server
         :return: The Forest object
         """
-        uri = "http://{0}:{1}/manage/v2/forests/{2}/properties".format(connection.host, connection.management_port, name)
-        response = requests.get(uri, auth=connection.auth, headers={u'accept': u'application/json'})
-        if response.status_code > 299:
-            raise response
-        result = Forest("temp")
-        result.config = json.loads(response.text)
+        result = Forest('temp')
+
+        uri = "http://{0}:{1}/manage/v2/forests/{2}/properties".format(conn.host, conn.management_port, name)
+        response = requests.get(uri, auth=conn.auth, headers={'accept': 'application/json'})
+        if response.status_code != 200:
+            raise UnexpectedManagementAPIResponse(response.text)
+
+        result.properties = json.loads(response.text)
+
+        uri='http://{0}:{1}/manage/v2/forests/{2}?view=config'.format(conn.host, conn.management_port, name)
+        response = requests.get(uri, auth=conn.auth, headers={'accept': 'application/json'})
+        if response.status_code != 200:
+            raise UnexpectedManagementAPIResponse(response.text)
+
+        response_json = json.loads(response.text)
+        result.config = response_json['forest-config']['config-properties']
+        result.config['forest-name'] = response_json['forest-config']['name']
+
+        for relation_group in response_json['forest-config']['relations']['relation-group']:
+            if relation_group['typeref'] == 'hosts':
+                result.config['host'] = relation_group['relation'][0]['nameref']
 
         return result

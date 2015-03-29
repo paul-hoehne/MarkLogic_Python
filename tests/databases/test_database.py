@@ -24,9 +24,10 @@ from __future__ import unicode_literals, print_function, absolute_import
 #
 
 import unittest
-from marklogic.models import Database, Connection, Host
+from marklogic.models import Database, Connection, Host, Forest
 from requests.auth import HTTPDigestAuth
 from resources import TestConnection as tc
+from test_settings import DatabaseSettings as ds
 
 class TestDatabase(unittest.TestCase):
     """
@@ -75,3 +76,60 @@ class TestDatabase(unittest.TestCase):
         db_names = [db.database_name() for db in databases]
         self.assertTrue("Modules" in db_names)
         self.assertTrue("Documents" in db_names)
+
+    def test_create_simple_forests(self):
+        """
+        Test the following scenario:
+
+        The database is given the names of two forests.
+        It should then create the two named forests.
+
+        """
+        conn = Connection(tc.hostname, HTTPDigestAuth(tc.admin, tc.password))
+
+        hosts = Host.list_hosts(conn)
+        db = Database("simple-forest-create-test-db", hosts[0].host_name())
+
+        db.set_forests(["simple-forest-create-forest1", "simple-forest-create-forest2"])
+
+        db.create(conn)
+
+        db = Database.lookup("simple-forest-create-test-db", conn)
+        try:
+            self.assertEqual(2, len(db.forests()))
+
+            self.assertIn("simple-forest-create-forest1", db.forests())
+            self.assertIn("simple-forest-create-forest2", db.forests())
+
+        finally:
+            db.remove(conn)
+
+    def test_create_single_detailed_forest(self):
+        """
+        Test the following scenario:
+
+        The database is given a forest object.  It should create a forest with
+        the given name.  That forest should match the features of the datailed
+        forest.
+
+        """
+
+        conn = Connection(tc.hostname, HTTPDigestAuth(tc.admin, tc.password))
+
+        hosts = Host.list_hosts(conn)
+        db = Database("detailed-forest-create-test-db", hosts[0].host_name())
+
+        forest = Forest("detailed-forest-create-forest1", host=hosts[0].host_name(),
+                        large_data_directory=ds.large_data_directory)
+
+        db.set_forests([forest])
+
+        db.create(conn)
+
+        forest = Forest.lookup("detailed-forest-create-forest1", conn)
+
+        try:
+            self.assertEqual("detailed-forest-create-forest1", forest.name())
+            self.assertEqual(ds.large_data_directory, forest.large_data_directory())
+        finally:
+            db.remove(conn)
