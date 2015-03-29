@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals, print_function, absolute_import
+
 #
 # Copyright 2015 MarkLogic Corporation
 #
@@ -141,7 +144,7 @@ class Database:
         :param forests: A list of forest names
         :return:The database object
         """
-        self.config[u'forest'] = forests
+        self.config['forest'] = forests
         return self
 
     def add_forest(self, forest):
@@ -152,20 +155,20 @@ class Database:
         :param forest: The forest name
         :return: The database object
         """
-        if not self.config[u'forest']:
-            self.config[u'forest'] = []
+        if not self.config['forest']:
+            self.config['forest'] = []
 
-        self.config[u'forest'].append(forest)
+        self.config['forest'].append(forest)
 
         return self
 
     def forests(self):
         """
-        Return the forests associated with this database
+        Return the names of the forests associated with this database
 
         :return: The associated forests
         """
-        return self.config[u'forest']
+        return self.config['forest']
 
     def set_language(self, language):
         """
@@ -175,7 +178,7 @@ class Database:
         :param language: The language abbreviation
         :return: The database object
         """
-        self.config[u'language'] = language
+        self.config['language'] = language
         return self
 
     def language(self):
@@ -184,9 +187,9 @@ class Database:
 
         :return: The default language for the database.
         """
-        return self.config[u'language']
+        return self.config['language']
 
-    def set_stemmed_searches(self, which=u'basic'):
+    def set_stemmed_searches(self, which='basic'):
         """
         Set the stemmed search option for the database.  Valid values are 'off',
         'basic', 'advanced' and 'decompounding'.
@@ -195,7 +198,7 @@ class Database:
         :return: The database object
         """
         validate_stemmed_searches_type(which)
-        self.config[u'stemmed-searches'] = which
+        self.config['stemmed-searches'] = which
         return self
 
     def stemmed_searches(self):
@@ -204,7 +207,7 @@ class Database:
 
         :return: The type of stemmed search
         """
-        return self.config[u'stemmed-searches']
+        return self.config['stemmed-searches']
 
     def set_word_searches(self, enabled=False):
         """
@@ -214,7 +217,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'word-searches'] = enabled
+        self.config['word-searches'] = enabled
         return self
 
     def word_searches(self):
@@ -223,7 +226,7 @@ class Database:
 
         :return: Stemmed word searches enabled
         """
-        return self.config[u'word-searches']
+        return self.config['word-searches']
 
     def set_word_positions(self, enabled=False):
         """
@@ -233,7 +236,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'word-positions'] = enabled
+        self.config['word-positions'] = enabled
         return self
 
     def word_positions(self):
@@ -242,7 +245,7 @@ class Database:
 
         :return: Word positions are enabled
         """
-        return self.config[u'word-positions']
+        return self.config['word-positions']
 
     def set_fast_phrase_searches(self, enabled=True):
         """
@@ -252,7 +255,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'fast-phrase-searches'] = enabled
+        self.config['fast-phrase-searches'] = enabled
         return self
 
     def fast_phrase_searches(self):
@@ -261,7 +264,7 @@ class Database:
 
         :return: Fast phrase searches enabled
         """
-        return self.config[u'fast-phrase-searches']
+        return self.config['fast-phrase-searches']
 
     def set_fast_reverse_searches(self, enabled=True):
         """
@@ -271,7 +274,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'fast-reverse-searches'] = enabled
+        self.config['fast-reverse-searches'] = enabled
         return self
 
     def fast_reverse_searches(self):
@@ -280,7 +283,7 @@ class Database:
 
         :return: Fast reverse searches enabled
         """
-        return self.config[u'fast-reverse-searches']
+        return self.config['fast-reverse-searches']
 
     def set_triple_index(self, enabled=False):
         """
@@ -290,7 +293,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'triple-index'] = enabled
+        self.config['triple-index'] = enabled
         return self
 
     def triple_index(self):
@@ -299,7 +302,7 @@ class Database:
 
         :return: The triple index enabled
         """
-        return self.config[u'triple-index']
+        return self.config['triple-index']
 
     def set_triple_positions(self, enabled=False):
         """
@@ -309,7 +312,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'triple-positions'] = enabled
+        self.config['triple-positions'] = enabled
         return self
 
     def triple_positions(self):
@@ -318,7 +321,7 @@ class Database:
 
         :return: Triple positions enabled
         """
-        return self.config[u'triple-positions']
+        return self.config['triple-positions']
 
     def set_fast_case_senstive_searches(self, enabled=True):
         """
@@ -328,7 +331,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'fast-case-sensitive-searches'] = enabled
+        self.config['fast-case-sensitive-searches'] = enabled
         return self
 
     def fast_cast_sensitive_searches(self):
@@ -337,7 +340,7 @@ class Database:
 
         :return: Fast case sensitive searches enabled
         """
-        return self.config[u'fast-case-sensitive-searches']
+        return self.config['fast-case-sensitive-searches']
 
     def set_fast_diacritic_sensitive_searches(self, enabled=True):
         """
@@ -347,7 +350,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'fast-diacritic-sensitive-searches'] = enabled
+        self.config['fast-diacritic-sensitive-searches'] = enabled
         return self
 
     def fast_diacritic_sensitive_searches(self):
@@ -356,7 +359,7 @@ class Database:
 
         :return: Fast diacritic sensitive searches enabled
         """
-        return self.config[u'fast-diacritic-sensitive-searches']
+        return self.config['fast-diacritic-sensitive-searches']
 
     def set_fast_element_word_searches(self, enabled=True):
         """
@@ -366,7 +369,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'fast-element-word-searches'] = enabled
+        self.config['fast-element-word-searches'] = enabled
         return self
 
     def fast_element_word_searches(self):
@@ -375,7 +378,7 @@ class Database:
 
         :return: Fast element word searches enabled
         """
-        return self.config[u'fast-element-word-searches']
+        return self.config['fast-element-word-searches']
 
     def set_element_word_positions(self, enabled=False):
         """
@@ -385,7 +388,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'element-word-positions'] = enabled
+        self.config['element-word-positions'] = enabled
         return self
 
     def element_word_positions(self):
@@ -394,7 +397,7 @@ class Database:
 
         :return: Fast element word searches enabled
         """
-        return self.config[u'element-word-positions']
+        return self.config['element-word-positions']
 
     def set_fast_element_phrase_searches(self, enabled=True):
         """
@@ -404,7 +407,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'fast-element-phrase-searches'] = enabled
+        self.config['fast-element-phrase-searches'] = enabled
         return self
 
     def fast_element_phrase_searches(self):
@@ -413,7 +416,7 @@ class Database:
 
         :return: Fast element phrase searches enabled
         """
-        return self.config[u'fast-element-phrase-searches']
+        return self.config['fast-element-phrase-searches']
 
     def set_element_value_positions(self, enabled=False):
         """
@@ -423,7 +426,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'element-value-positions'] = enabled
+        self.config['element-value-positions'] = enabled
         return self
 
     def element_value_positions(self):
@@ -432,7 +435,7 @@ class Database:
 
         :return: Element value positions enabled
         """
-        return self.config[u'element-value-positions']
+        return self.config['element-value-positions']
 
     def set_attribute_value_positions(self, enabled=False):
         """
@@ -442,7 +445,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'attribute-value-positions'] = enabled
+        self.config['attribute-value-positions'] = enabled
         return self
 
     def attribute_value_positions(self):
@@ -451,7 +454,7 @@ class Database:
 
         :return: Attribute value positions enabled
         """
-        return self.config[u'attribute-value-positions']
+        return self.config['attribute-value-positions']
 
     def set_field_value_searches(self, enabled=False):
         """
@@ -461,7 +464,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'field-value-searches'] = enabled
+        self.config['field-value-searches'] = enabled
         return self
 
     def field_value_searches(self):
@@ -470,7 +473,7 @@ class Database:
 
         :return: Field value searches enabled
         """
-        return self.config[u'field-value-searches']
+        return self.config['field-value-searches']
 
     def set_field_value_positions(self, enabled=False):
         """
@@ -480,7 +483,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'field-value-positions'] = enabled
+        self.config['field-value-positions'] = enabled
         return self
 
     def field_value_positions(self):
@@ -489,7 +492,7 @@ class Database:
 
         :return: Field value positions enabled
         """
-        return self.config[u'field-value-positions']
+        return self.config['field-value-positions']
 
     def set_three_character_searches(self, enabled=False):
         """
@@ -499,7 +502,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'three-character-searches'] = enabled
+        self.config['three-character-searches'] = enabled
         return self
 
     def three_character_searches(self):
@@ -508,7 +511,7 @@ class Database:
 
         :return: Three character searches enabled
         """
-        return self.config[u'three-character-searches']
+        return self.config['three-character-searches']
 
     def set_three_character_word_positions(self, enabled=False):
         """
@@ -518,7 +521,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'three-character-word-positions'] = enabled
+        self.config['three-character-word-positions'] = enabled
         return self
 
     def three_character_word_positions(self):
@@ -527,7 +530,7 @@ class Database:
 
         :return: Three character word positions enabled
         """
-        return self.config[u'three-character-word-positions']
+        return self.config['three-character-word-positions']
 
     def set_fast_element_character_searches(self, enabled=False):
         """
@@ -537,7 +540,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'fast-element-character-searches'] = enabled
+        self.config['fast-element-character-searches'] = enabled
         return self
 
     def fast_element_character_searches(self):
@@ -546,7 +549,7 @@ class Database:
 
         :return: Fast element character searches
         """
-        return self.config[u'fast-element-character-searches']
+        return self.config['fast-element-character-searches']
 
     def set_trailing_wildcard_searches(self, enabled=False):
         """
@@ -556,7 +559,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'trailing-wildcard-searches'] = enabled
+        self.config['trailing-wildcard-searches'] = enabled
         return self
 
     def trailing_wildcard_searches(self):
@@ -565,7 +568,7 @@ class Database:
 
         :return: Trailing wild card searches enabled
         """
-        return self.config[u'trailing-wildcard-searches']
+        return self.config['trailing-wildcard-searches']
 
     def set_trailing_wildcard_word_positions(self, enabled=False):
         """
@@ -575,7 +578,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'trailing-wildcard-word-positions'] = enabled
+        self.config['trailing-wildcard-word-positions'] = enabled
         return self
 
     def trailing_wildcard_word_positions(self):
@@ -584,7 +587,7 @@ class Database:
 
         :return: Index word positions enabled
         """
-        return self.config[u'trailing-wildcard-word-positions']
+        return self.config['trailing-wildcard-word-positions']
 
     def set_fast_element_trailing_wildcard_searches(self, enabled=False):
         """
@@ -594,7 +597,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'fast-element-trailing-wildcard-searches'] = enabled
+        self.config['fast-element-trailing-wildcard-searches'] = enabled
         return self
 
     def fast_element_trailing_wildcard_searches(self):
@@ -603,7 +606,7 @@ class Database:
 
         :return: Fast element trailing wildcard searches enabled
         """
-        return self.config[u'fast-element-trailing-wildcard-searches']
+        return self.config['fast-element-trailing-wildcard-searches']
 
     def set_two_character_searches(self, enabled=False):
         """
@@ -613,7 +616,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'two-character-searches'] = enabled
+        self.config['two-character-searches'] = enabled
         return self
 
     def two_character_searches(self):
@@ -622,7 +625,7 @@ class Database:
 
         :return: Two character wildcard searches enabled
         """
-        return self.config[u'two-character-searches']
+        return self.config['two-character-searches']
 
     def set_one_character_searches(self, enabled=False):
         """
@@ -632,7 +635,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'one-character-searches'] = enabled
+        self.config['one-character-searches'] = enabled
         return self
 
     def one_character_searches(self):
@@ -641,7 +644,7 @@ class Database:
 
         :return: One character wildcard searches enabled
         """
-        return self.config[u'one-character-searches']
+        return self.config['one-character-searches']
 
     def set_uri_lexicon(self, enabled=True):
         """
@@ -651,7 +654,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'uri-lexicon'] = enabled
+        self.config['uri-lexicon'] = enabled
         return self
 
     def uri_lexicon(self):
@@ -660,7 +663,7 @@ class Database:
 
         :return: URI lexicon enabled
         """
-        return self.config[u'uri-lexicon']
+        return self.config['uri-lexicon']
 
     def set_collection_lexicon(self, enabled=False):
         """
@@ -670,7 +673,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'collection-lexicon'] = enabled
+        self.config['collection-lexicon'] = enabled
         return self
 
     def collection_lexicon(self):
@@ -679,7 +682,7 @@ class Database:
 
         :return: Collection lexicon enabled
         """
-        return self.config[u'collection-lexicon']
+        return self.config['collection-lexicon']
 
     def set_reindexer_enable(self, enabled=True):
         """
@@ -689,7 +692,7 @@ class Database:
         :return:
         """
         validate_boolean(enabled)
-        self.config[u'reindexer-enable'] = enabled
+        self.config['reindexer-enable'] = enabled
         return self
 
     def reindexer_enable(self):
@@ -698,7 +701,7 @@ class Database:
 
         :return: Automatic reindexing enabled
         """
-        return self.config[u'reindexer-enable']
+        return self.config['reindexer-enable']
 
     def set_reindexer_throttle(self, limit=5):
         """
@@ -708,7 +711,7 @@ class Database:
         :return: The database object
         """
         validate_integer_range(limit, 1, 5)
-        self.config[u'reindexer-throttle'] = limit
+        self.config['reindexer-throttle'] = limit
         return self
 
     def reindexer_throttle(self):
@@ -717,7 +720,7 @@ class Database:
 
         :return: The level of system resources
         """
-        return self.config[u'reindexer-throttle']
+        return self.config['reindexer-throttle']
 
     def set_reindexer_timestamp(self, limit=0):
         """
@@ -726,7 +729,7 @@ class Database:
         :param limit: Reindexer timestamp
         :return: The document object
         """
-        self.config[u'reindexer-timestamp'] = limit
+        self.config['reindexer-timestamp'] = limit
         return self
 
     def reindexer_timestamp(self):
@@ -735,9 +738,9 @@ class Database:
 
         :return: Reindexer timestamp in milliseconds
         """
-        return self.config[u'reindexer-timestamp']
+        return self.config['reindexer-timestamp']
 
-    def set_directory_creation(self, which=u'manual'):
+    def set_directory_creation(self, which='manual'):
         """
         Directory creation method
 
@@ -745,7 +748,7 @@ class Database:
         :return: The database object
         """
         validate_directory_creation(which)
-        self.config[u'directory-creation'] = which
+        self.config['directory-creation'] = which
         return self
 
     def directory_creation(self):
@@ -754,7 +757,7 @@ class Database:
 
         :return: Directory creation method
         """
-        return self.config[u'directory-creation']
+        return self.config['directory-creation']
 
     def set_maintain_last_modified(self, enabled=False):
         """
@@ -764,7 +767,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'maintain-last-modified'] = enabled
+        self.config['maintain-last-modified'] = enabled
         return self
 
     def maintain_last_modified(self):
@@ -773,7 +776,7 @@ class Database:
 
         :return: Maintain last modified
         """
-        return self.config[u'maintain-last-modified']
+        return self.config['maintain-last-modified']
 
     def set_maintain_directory_last_modified(self, enabled=False):
         """
@@ -783,7 +786,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'maintain-directory-last-modified'] = enabled
+        self.config['maintain-directory-last-modified'] = enabled
         return self
 
     def maintain_directory_last_modified(self):
@@ -792,7 +795,7 @@ class Database:
 
         :return: Maintain directory last modified property enabled
         """
-        return self.config[u'maintain-directory-last-modified']
+        return self.config['maintain-directory-last-modified']
 
     def set_inherit_permissions(self, enabled=False):
         """
@@ -802,7 +805,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'inherit-permissions'] = enabled
+        self.config['inherit-permissions'] = enabled
         return self
 
     def inherit_permissions(self):
@@ -811,7 +814,7 @@ class Database:
 
         :return: Inherit document permissions from parent enabled
         """
-        return self.config[u'inherit-permissions']
+        return self.config['inherit-permissions']
 
     def set_inherit_collections(self, enabled=False):
         """
@@ -821,7 +824,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'inherit-collections'] = enabled
+        self.config['inherit-collections'] = enabled
         return self
 
     def inherit_collections(self):
@@ -830,7 +833,7 @@ class Database:
 
         :return: Inherit default collections enabled
         """
-        return self.config[u'inherit-collections']
+        return self.config['inherit-collections']
 
     def set_inherit_quality(self, enabled=False):
         """
@@ -840,7 +843,7 @@ class Database:
         :return: The database object
         """
         validate_boolean(enabled)
-        self.config[u'inherit-quality'] = enabled
+        self.config['inherit-quality'] = enabled
         return self
 
     def inherit_quality(self):
@@ -849,7 +852,7 @@ class Database:
 
         :return: Inherity document quality
         """
-        return self.config[u'inherit-quality']
+        return self.config['inherit-quality']
 
     def set_in_memory_limit(self, limit=262144):
         """
@@ -858,7 +861,7 @@ class Database:
         :param limit: In memory fragment limit
         :return: The database object
         """
-        self.config[u'in-memory-limit'] = limit
+        self.config['in-memory-limit'] = limit
         return self
 
     def in_memory_limit(self):
@@ -867,7 +870,7 @@ class Database:
 
         :return: In memory fragment limit
         """
-        return self.config[u'in-memory-limit']
+        return self.config['in-memory-limit']
 
     def set_in_memory_list_size(self, limit=512):
         """
@@ -876,7 +879,7 @@ class Database:
         :param limit: The in memory list storage in megabytes
         :return: The database object
         """
-        self.config[u'in-memory-list-size'] = limit
+        self.config['in-memory-list-size'] = limit
         return self
 
     def in_memory_list_size(self):
@@ -885,7 +888,7 @@ class Database:
 
         :return: The in memory list storage size in megabytes
         """
-        return self.config[u'in-memory-list-size']
+        return self.config['in-memory-list-size']
 
     def set_in_memory_tree_size(self, limit=128):
         """
@@ -894,7 +897,7 @@ class Database:
         :param limit: In memory tree storage size
         :return: The database object
         """
-        self.config[u'in-memory-tree-size'] = limit
+        self.config['in-memory-tree-size'] = limit
         return self
 
     def in_memory_tree_size(self):
@@ -903,7 +906,7 @@ class Database:
 
         :return: In memory tree storage size
         """
-        return self.config[u'in-memory-tree-size']
+        return self.config['in-memory-tree-size']
 
     def set_in_memory_range_index_size(self, limit=16):
         """
@@ -912,7 +915,7 @@ class Database:
         :param limit: The in memory range index size
         :return: The database object
         """
-        self.config[u'in-memory-range-index-size'] = limit
+        self.config['in-memory-range-index-size'] = limit
         return self
 
     def in_memory_range_index_size(self):
@@ -921,7 +924,7 @@ class Database:
 
         :return: The in-memory range index size
         """
-        return self.config[u'in-memory-range-index-size']
+        return self.config['in-memory-range-index-size']
 
     def set_in_memory_reverse_index_size(self, limit=16):
         """
@@ -930,7 +933,7 @@ class Database:
         :param limit: In memory reverse index size
         :return: The database object
         """
-        self.config[u'in-memory-reverse-index-size'] = limit
+        self.config['in-memory-reverse-index-size'] = limit
         return self
 
     def in_memory_reverse_index_size(self):
@@ -939,7 +942,7 @@ class Database:
 
         :return: In memory reverse index size
         """
-        return self.config[u'in-memory-reverse-index-size']
+        return self.config['in-memory-reverse-index-size']
 
     def set_in_memory_triple_index_size(self, limit=64):
         """
@@ -948,7 +951,7 @@ class Database:
         :param limit: The in memory triple index size
         :return: The database object
         """
-        self.config[u'in-memory-triple-index-size'] = limit
+        self.config['in-memory-triple-index-size'] = limit
         return self
 
     def in_memory_triple_index_size(self):
@@ -957,7 +960,7 @@ class Database:
 
         :return: In memory triple index size
         """
-        return self.config[u'in-memory-triple-index-size']
+        return self.config['in-memory-triple-index-size']
 
     def set_large_size_threshold(self, limit=1024):
         """
@@ -966,7 +969,7 @@ class Database:
         :param limit: Size limit for large objects
         :return: The database object
         """
-        self.config[u'large-size-threshold'] = limit
+        self.config['large-size-threshold'] = limit
         return self
 
     def large_size_threshold(self):
@@ -975,9 +978,9 @@ class Database:
 
         :return: The large size threshold
         """
-        return self.config[u'large-size-threshold']
+        return self.config['large-size-threshold']
 
-    def set_locking(self, which=u'fast'):
+    def set_locking(self, which='fast'):
         """
         Specifies how robust transaction locking should be.
 
@@ -985,7 +988,7 @@ class Database:
         :return: The database object
         """
         validate_locking_type(which)
-        self.config[u'locking'] = which
+        self.config['locking'] = which
         return self
 
     def locking(self):
@@ -994,9 +997,9 @@ class Database:
 
         :return: The transaction locking
         """
-        return self.config[u'locking']
+        return self.config['locking']
 
-    def set_journaling(self, which=u'fast'):
+    def set_journaling(self, which='fast'):
         """
         Specifies how robust transaction journaling should be.
 
@@ -1004,7 +1007,7 @@ class Database:
         :return:The database object
         """
         validate_locking_type(which)
-        self.config[u'journaling'] = which
+        self.config['journaling'] = which
         return self
 
     def journaling(self):
@@ -1013,7 +1016,7 @@ class Database:
 
         :return:The journaling
         """
-        return self.config[u'journaling']
+        return self.config['journaling']
 
     def set_journal_size(self, limit=682):
         """
@@ -1022,7 +1025,7 @@ class Database:
         :param limit: The journal size
         :return:The database object
         """
-        self.config[u'journal-size'] = limit
+        self.config['journal-size'] = limit
         return self
 
     def journal_size(self):
@@ -1030,7 +1033,7 @@ class Database:
         The size of the journal, in megabytes.
         :return:The journal size
         """
-        return self.config[u'journal-size']
+        return self.config['journal-size']
 
     def set_journal_count(self, limit=2):
         """
@@ -1039,7 +1042,7 @@ class Database:
         :param limit:The journal count
         :return:The database object
         """
-        self.config[u'journal-count'] = limit
+        self.config['journal-count'] = limit
         return self
 
     def journal_count(self):
@@ -1048,7 +1051,7 @@ class Database:
 
         :return:The journal count
         """
-        return self.config[u'journal-count']
+        return self.config['journal-count']
 
     def set_preallocate_journal(self, enabled=False):
         """
@@ -1058,7 +1061,7 @@ class Database:
         :return:The database object
         """
         validate_boolean(enabled)
-        self.config[u'preallocate-journals'] = enabled
+        self.config['preallocate-journals'] = enabled
         return self
 
     def preallocate_journal(self):
@@ -1067,7 +1070,7 @@ class Database:
 
         :return:Pre-allocate journal files
         """
-        return self.config[u'preallocate-journals']
+        return self.config['preallocate-journals']
 
     def set_preload_mapped_data(self, enabled=False):
         """
@@ -1077,7 +1080,7 @@ class Database:
         :return:The database object
         """
         validate_boolean(enabled)
-        self.config[u'preload-mapped-data'] = enabled
+        self.config['preload-mapped-data'] = enabled
         return self
 
     def preload_mapped_data(self):
@@ -1086,7 +1089,7 @@ class Database:
 
         :return:Preload memory mapped forest information
         """
-        return self.config[u'preload-mapped-data']
+        return self.config['preload-mapped-data']
 
     def set_preload_replica_mapped_data(self, enabled=False):
         """
@@ -1096,7 +1099,7 @@ class Database:
         :return:The database object
         """
         validate_boolean(enabled)
-        self.config[u'preload-replica-mapped-data'] = enabled
+        self.config['preload-replica-mapped-data'] = enabled
         return self
 
     def preload_replica_mapped_data(self):
@@ -1105,9 +1108,9 @@ class Database:
 
         :return:Preload mapped replica forest information
         """
-        return self.config[u'preload-replica-mapped-data']
+        return self.config['preload-replica-mapped-data']
 
-    def set_range_index_optimize(self, which=u'facet-time'):
+    def set_range_index_optimize(self, which='facet-time'):
         """
         Specifies how to optimize range indexes
 
@@ -1115,7 +1118,7 @@ class Database:
         :return:The database object
         """
         validate_range_index_optimize_options(which)
-        self.config[u'range-index-optimize'] = which
+        self.config['range-index-optimize'] = which
         return self
 
     def range_index_optimize(self):
@@ -1124,7 +1127,7 @@ class Database:
 
         :return:Range index optimization type
         """
-        return self.config[u'range-index-optimize']
+        return self.config['range-index-optimize']
 
     def set_position_list_max_size(self, limit=256):
         """
@@ -1133,7 +1136,7 @@ class Database:
         :param limit:Max position containing list size
         :return:The database object
         """
-        self.config[u'positions-list-max-size'] = limit
+        self.config['positions-list-max-size'] = limit
         return self
 
     def position_list_max_size(self):
@@ -1142,9 +1145,9 @@ class Database:
 
         :return:The maximum position containing list size
         """
-        return self.config[u'positions-list-max-size']
+        return self.config['positions-list-max-size']
 
-    def set_format_compatibility(self, which=u'automatic'):
+    def set_format_compatibility(self, which='automatic'):
         """
         Version of on-disk forest format.
 
@@ -1152,7 +1155,7 @@ class Database:
         :return:The database object
         """
         validate_format_compatibility_options(which)
-        self.config[u'format-compatibility'] = which
+        self.config['format-compatibility'] = which
         return self
 
     def format_compatibility(self):
@@ -1161,9 +1164,9 @@ class Database:
 
         :return:The on-disk forest format
         """
-        return self.config[u'format-compatibility']
+        return self.config['format-compatibility']
 
-    def set_index_detection(self, which=u'automatic'):
+    def set_index_detection(self, which='automatic'):
         """
         Handling of differences between the current configuration of database indexes and on-disk settings.
 
@@ -1171,7 +1174,7 @@ class Database:
         :return:The database object
         """
         validate_index_detection_options(which)
-        self.config[u'index-detection'] = which
+        self.config['index-detection'] = which
         return self
 
     def index_detection(self):
@@ -1180,9 +1183,9 @@ class Database:
 
         :return:How to handle differences in configuration settings
         """
-        return self.config[u'index-detection']
+        return self.config['index-detection']
 
-    def set_expunge_locks(self, which=u'none'):
+    def set_expunge_locks(self, which='none'):
         """
         Garbage collection of timed locks that have expired.
 
@@ -1190,7 +1193,7 @@ class Database:
         :return:The database object
         """
         validate_expunge_locks_options(which)
-        self.config[u'expunge-locks'] = which
+        self.config['expunge-locks'] = which
         return self
 
     def expunge_locks(self):
@@ -1199,9 +1202,9 @@ class Database:
 
         :return:How to garbage collect timed locks
         """
-        return self.config[u'expunge-locks']
+        return self.config['expunge-locks']
 
-    def set_if_normalization(self, which=u'scaled-log'):
+    def set_if_normalization(self, which='scaled-log'):
         """
         What kind of term frequency normalization to apply.
 
@@ -1209,7 +1212,7 @@ class Database:
         :return:The database object
         """
         validate_term_frequency_normalization_options(which)
-        self.config[u'tf-normalization'] = which
+        self.config['tf-normalization'] = which
         return self
 
     def if_normalization(self):
@@ -1218,9 +1221,9 @@ class Database:
 
         :return:The term frequency normalization option
         """
-        return self.config[u'tf-normalization']
+        return self.config['tf-normalization']
 
-    def set_merge_priority(self, which=u'lower'):
+    def set_merge_priority(self, which='lower'):
         """
         The CPU scheduler priority for merges.
 
@@ -1228,7 +1231,7 @@ class Database:
         :return:The database object
         """
         validate_merge_priority_options(which)
-        self.config[u'merge-priority'] = which
+        self.config['merge-priority'] = which
         return self
 
     def merge_priority(self):
@@ -1237,7 +1240,7 @@ class Database:
 
         :return:CPU scheduling hint for merges
         """
-        return self.config[u'merge-priority']
+        return self.config['merge-priority']
 
     def set_merge_max_size(self, limit=32768):
         """
@@ -1246,11 +1249,11 @@ class Database:
         :param limit:Size in megabytes
         :return:The database object
         """
-        self.config[u'merge-max-size'] = limit
+        self.config['merge-max-size'] = limit
         return self
 
     def merge_max_size(self):
-        return self.config[u'merge-max-size']
+        return self.config['merge-max-size']
 
     def set_merge_min_size(self, limit=1024):
         """
@@ -1259,7 +1262,7 @@ class Database:
         :param limit:Minimum stand count for merge
         :return:The database object
         """
-        self.config[u'merge-min-size'] = limit
+        self.config['merge-min-size'] = limit
         return self
 
     def merge_min_size(self):
@@ -1268,7 +1271,7 @@ class Database:
 
         :return:Minimum stand count for merge
         """
-        return self.config[u'merge-min-size']
+        return self.config['merge-min-size']
 
     def set_merge_min_ratio(self, limit=2):
         """
@@ -1277,7 +1280,7 @@ class Database:
         :param limit: The marge min ratio
         :return:The database object
         """
-        self.config[u'merge-min-ratio'] = limit
+        self.config['merge-min-ratio'] = limit
         return self
 
     def merge_min_ratio(self):
@@ -1286,7 +1289,7 @@ class Database:
 
         :return:The marge min ratio
         """
-        return self.config[u'merge-min-ratio']
+        return self.config['merge-min-ratio']
 
     def set_merge_timestamp(self, limit=0):
         """
@@ -1295,7 +1298,7 @@ class Database:
         :param limit:Minimum value
         :return:The database object
         """
-        self.config[u'merge-timestamp'] = limit
+        self.config['merge-timestamp'] = limit
         return self
 
     def merge_timestamp(self):
@@ -1304,10 +1307,10 @@ class Database:
 
         :return:Minimum value
         """
-        return self.config[u'merge-timestamp']
+        return self.config['merge-timestamp']
 
     def set_retain_until_backup(self, enabled=False):
-        self.config[u'retain-until-backup'] = enabled
+        self.config['retain-until-backup'] = enabled
         return self
 
     def set_rebalancer_enable(self, enabled=True):
@@ -1318,7 +1321,7 @@ class Database:
         :return:The database object
         """
         validate_boolean(enabled)
-        self.config[u'rebalancer-enable'] = enabled
+        self.config['rebalancer-enable'] = enabled
         return self
 
     def rebalancer_enable(self):
@@ -1327,7 +1330,7 @@ class Database:
 
         :return:Enable automatic rebalancing
         """
-        return self.config[u'rebalancer-enable']
+        return self.config['rebalancer-enable']
 
     def set_rebalancer_throttle(self, limit=5):
         """
@@ -1337,7 +1340,7 @@ class Database:
         :return:The database object
         """
         validate_integer_range(limit, 1, 5)
-        self.config[u'rebalancer-throttle'] = limit
+        self.config['rebalancer-throttle'] = limit
         return self
 
     def rebalancer_throttle(self):
@@ -1346,9 +1349,9 @@ class Database:
 
         :return:The relative amount of resources to dedicate to rebalancing
         """
-        return self.config[u'rebalancer-throttle']
+        return self.config['rebalancer-throttle']
 
-    def set_assignemnt_policy(self, which=u'bucket'):
+    def set_assignemnt_policy(self, which='bucket'):
         """
         What policy to use for assignment and rebalancing.
 
@@ -1356,7 +1359,7 @@ class Database:
         :return:The database object
         """
         validate_assignment_policy_options(which)
-        self.config[u'assignment-policy'] = {"assignment-policy-name": which}
+        self.config['assignment-policy'] = {"assignment-policy-name": which}
         return self
 
     def assignment_policy(self):
@@ -1365,7 +1368,7 @@ class Database:
 
         :return:The policy for assignment and rebalancing
         """
-        return self.config[u'assignment-policy']
+        return self.config['assignment-policy']
 
     def add_path_namespace(self, prefix, namespace):
         """
@@ -1375,12 +1378,12 @@ class Database:
         :param namespace: The namespace uri (i.e. 'http://bar.com')
         :return: The database object
         """
-        if u'path-namespaces' not in self.config:
-            self.config[u'path-namespaces'] = []
+        if 'path-namespaces' not in self.config:
+            self.config['path-namespaces'] = []
 
-        self.config[u'path-namespaces'].append({
-            u'prefix': prefix,
-            u'namespace-uri': namespace
+        self.config['path-namespaces'].append({
+            'prefix': prefix,
+            'namespace-uri': namespace
         })
         return self
 
@@ -1391,9 +1394,9 @@ class Database:
 
         :return:The path namespaces or none
         """
-        if u'path-namespaces' not in self.config:
+        if 'path-namespaces' not in self.config:
             return None
-        return self.config[u'path-namespaces']
+        return self.config['path-namespaces']
 
     def create(self, connection):
         """
@@ -1404,11 +1407,18 @@ class Database:
         """
         uri = "http://{0}:{1}/manage/v2/databases".format(connection.host, connection.management_port)
 
-        for forest_name in self.config[u'forest']:
-            new_forest = Forest(forest_name)
-            if self.hostname is not None:
-                new_forest.set_host(self.hostname)
-            new_forest.create(connection)
+        forest_names = []
+        for forest_info in self.config['forest']:
+            if isinstance(forest_info, str) or isinstance(forest_info, unicode):
+                new_forest = Forest(forest_info, host=self.hostname)
+                new_forest.create(connection)
+                forest_names.append(forest_info)
+
+            elif isinstance(forest_info, Forest):
+                forest_info.create(connection)
+                forest_names.append(forest_info.name())
+
+        self.config['forest'] = forest_names
 
         response = requests.post(uri, json=self.config, auth=connection.auth)
         if response.status_code > 299:
@@ -1425,7 +1435,7 @@ class Database:
         :return:The database object
         """
         uri = "http://{0}:{1}/manage/v2/databases/{2}/properties".format(connection.host, connection.management_port,
-                                                                         self.config[u'database-name'])
+                                                                         self.config['database-name'])
         response = requests.put(uri, json=self.config, auth=connection.auth)
 
         if response.status_code > 299:
@@ -1441,19 +1451,20 @@ class Database:
         :return:The database object
         """
         uri = "http://{0}:{1}/manage/v2/databases/{2}".format(connection.host, connection.management_port,
-                                                              self.config[u'database-name'])
+                                                              self.config['database-name'])
         response = requests.delete(uri, auth=connection.auth)
 
         if response.status_code > 299 and not response.status_code == 404:
             raise UnexpectedManagementAPIResponse(response.text)
 
-        for forest_name in self.config[u'forest']:
-            forest_uri = uri = "http://{0}:{1}/manage/v2/forests/{2}?level=full".format(connection.host,
-                                                                                        connection.management_port,
-                                                                                        forest_name)
-            response = requests.delete(forest_uri, auth=connection.auth)
-            if response.status_code > 299 and not response.status_code == 404:
-                raise UnexpectedManagementAPIResponse(response.text)
+        if 'forest' in self.config:
+            for forest_name in self.config['forest']:
+                forest_uri = uri = "http://{0}:{1}/manage/v2/forests/{2}?level=full".format(connection.host,
+                                                                                            connection.management_port,
+                                                                                            forest_name)
+                response = requests.delete(forest_uri, auth=connection.auth)
+                if response.status_code > 299 and not response.status_code == 404:
+                    raise UnexpectedManagementAPIResponse(response.text)
 
         return self
 
@@ -1469,7 +1480,7 @@ class Database:
         :return:The database object
         """
         doc_url = "http://{0}:{1}/v1/documents?uri={2}&database={3}".format(connection.host, connection.port, uri,
-                                                                            self.config[u'database-name'])
+                                                                            self.config['database-name'])
 
         if collections is not None:
             for collection in collections:
@@ -1532,7 +1543,7 @@ class Database:
         """
         uri = "http://{0}:{1}/manage/v2/databases/{2}/properties".format(connection.host, connection.management_port,
                                                                          name)
-        response = requests.get(uri, auth=connection.auth, headers={u'accept': u'application/json'})
+        response = requests.get(uri, auth=connection.auth, headers={'accept': 'application/json'})
 
         result = None
         if response.status_code == 200:
@@ -1542,6 +1553,25 @@ class Database:
             raise UnexpectedManagementAPIResponse(response.text)
 
         return result
+
+    @classmethod
+    def list_databases(cls, connection):
+        uri = "http://{0}:{1}/manage/v2/databases".format(connection.host, connection.management_port)
+        response = requests.get(uri, auth=connection.auth, headers={'accept': 'application/json'})
+
+        if response.status_code == 200:
+            response_json = json.loads(response.text)
+            db_count = response_json['database-default-list']['list-items']['list-count']['value']
+
+            result = []
+            if db_count > 0:
+                for item in response_json['database-default-list']['list-items']['list-item']:
+                    result.append(Database.lookup(item['nameref'], connection))
+        else:
+            raise UnexpectedManagementAPIResponse(response.text)
+
+        return result
+
 
     def add_index(self, index_def):
         """
@@ -1553,11 +1583,11 @@ class Database:
         """
         index_name = "range-element-index"
         if index_def.__class__ == ElementRange:
-            index_name = u'range-element-index'
+            index_name = 'range-element-index'
         elif index_def.__class__ == ElementAttributeRange:
-            index_name = u'range-element-attribute-index'
+            index_name = 'range-element-attribute-index'
         elif index_def.__class__ == FieldRange:
-            index_name = u'range-field-index'
+            index_name = 'range-field-index'
 
         if index_name not in self.config:
             self.config[index_name] = []
@@ -1566,37 +1596,37 @@ class Database:
         return self
 
     def field_range_index(self, index=None):
-        if index is None and u'range-field-index' in self.config:
+        if index is None and 'range-field-index' in self.config:
             result = []
-            for field in self.config[u'range-field-index']:
+            for field in self.config['range-field-index']:
                 temp = FieldRange("", "")
                 temp.config = field
                 result.append(temp)
             return result
-        elif u'range-field-index' in self.config and len(self.config[u'range-field-index']) > index:
+        elif 'range-field-index' in self.config and len(self.config['range-field-index']) > index:
             temp = FieldRange("", "")
-            temp.config = self.config[u'range-field-index'][index]
+            temp.config = self.config['range-field-index'][index]
             return temp
         return None
 
     def add_field(self, field):
-        if u'field' not in self.config:
-            self.config[u'field'] = []
+        if 'field' not in self.config:
+            self.config['field'] = []
 
-        self.config[u'field'].append(field.config)
+        self.config['field'].append(field.config)
 
         return self
 
     def fields(self, field_idx):
-        if u'fields' not in self.config:
+        if 'fields' not in self.config:
             return None
-        if field_idx >= len(self.config[u'fields']):
+        if field_idx >= len(self.config['fields']):
             return None
-        return self.config[u'fields'][field_idx]
+        return self.config['fields'][field_idx]
 
     def get_document(self, conn, document_uri, content_type='*/*'):
         doc_url = "http://{0}:{1}/v1/documents?uri={2}&database={3}".format(conn.host, conn.port, document_uri,
-                                                                            self.config[u'database-name'])
+                                                                            self.config['database-name'])
 
         response = requests.get(doc_url, auth=conn.auth, headers={'accept': content_type})
         if response.status_code == 404:

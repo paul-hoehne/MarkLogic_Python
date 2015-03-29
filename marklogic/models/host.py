@@ -24,6 +24,7 @@ from __future__ import unicode_literals, print_function, absolute_import
 
 import requests
 import json
+from .utilities.exceptions import *
 
 
 class Host(object):
@@ -94,7 +95,7 @@ class Host(object):
             result = Host()
             result.config = json.loads(response.text)
         elif response.status_code != 404:
-            raise Exception(response)
+            raise UnexpectedManagementAPIResponse(response.text)
         return result
 
     @classmethod
@@ -117,6 +118,6 @@ class Host(object):
                 for item in response_json['host-default-list']['list-items']['list-item']:
                     result.append(Host.lookup(item['nameref'], connection))
         else:
-            raise Exception(response)
+            raise UnexpectedManagementAPIResponse(response.text)
 
         return result

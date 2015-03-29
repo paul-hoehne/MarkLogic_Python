@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals, print_function, absolute_import
+
 #
 # Copyright 2015 MarkLogic Corporation
 #
@@ -114,3 +117,8 @@ def validate_assignment_policy_options(raw_val):
 
 def validate_custom(message):
     raise ValidationError("Validation error", repr(message))
+
+
+def validate_forest_availability(raw_val):
+    if raw_val not in ['online', 'offline']:
+        raise ValidationError("Forest availability status is not a valid value", repr(raw_val))
