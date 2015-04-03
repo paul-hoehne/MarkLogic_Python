@@ -44,8 +44,7 @@ easy_isntall without first checking out the project.
 
 ## Running Tests
 
-To run tests, edit the resources.py file.  Change the values of hostname, admin, and password to match the 
-values for your environment.  The tests reference these values to connect with your MarkLogic server.
+To run tests, copy the example_resources.py to resources.py file.  Change the values of hostname, admin, and password in resources.py to match the values for your environment.  The tests reference these values to connect with your MarkLogic server.
 
 
 ## Support
