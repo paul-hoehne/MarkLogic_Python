@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals, print_function, absolute_import
+
 #
 # Copyright 2015 MarkLogic Corporation
 #
@@ -49,3 +52,6 @@ class TestPaths(unittest.TestCase):
         self.assertEqual('http://foo.bar.com/invoice', namespaces[0][u'namespace-uri'])
 
         self.assertEqual(db, return_val)
+
+if __name__ == "__main__":
+    unittest.main()

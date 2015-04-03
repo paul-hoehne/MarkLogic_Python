@@ -76,3 +76,6 @@ class TestForest(unittest.TestCase):
             self.assertEqual(ds.fast_data_directory, forest.fast_data_directory())
         finally:
             forest.remove(conn)
+
+if __name__ == "__main__":
+    unittest.main();

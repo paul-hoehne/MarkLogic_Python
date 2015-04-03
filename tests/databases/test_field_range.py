@@ -57,11 +57,13 @@ class TestField(unittest.TestCase):
         field.add_path("inv:id", 1)
 
         result = db.add_field(field)
-        self.assertIn(u'fields', db.config)
+        self.assertIn(u'field', db.config)
         self.assertEqual(result, db)
 
-        self.assertEqual(1, len(db.config[u'fields']))
-        self.assertEqual("invoice-id", db.config[u'fields'][0].name())
+        self.assertEqual(1, len(db.config[u'field']))
+
+        field = db.fields(0)
+        self.assertEqual("invoice-id", field.name())
 
         field = db.fields(0)
         self.assertEqual(2, len(field.paths()))
@@ -125,3 +127,6 @@ class TestField(unittest.TestCase):
 
         indexes = db.field_range_index()
         self.assertEqual(1, len(indexes))
+
+if __name__ == "__main__":
+    unittest.main()

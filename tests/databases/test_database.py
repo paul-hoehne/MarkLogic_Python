@@ -133,3 +133,6 @@ class TestDatabase(unittest.TestCase):
             self.assertEqual(ds.large_data_directory, forest.large_data_directory())
         finally:
             db.remove(conn)
+
+if __name__ == "__main__":
+    unittest.main()
