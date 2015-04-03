@@ -22,6 +22,7 @@ from __future__ import unicode_literals, print_function, absolute_import
 # Paul Hoehne       03/01/2015     Initial development
 # Paul Hoehne       03/08/2014     Added support for field indexes
 
+import sys
 
 import requests
 import json
@@ -1408,15 +1409,27 @@ class Database:
         uri = "http://{0}:{1}/manage/v2/databases".format(connection.host, connection.management_port)
 
         forest_names = []
-        for forest_info in self.config['forest']:
-            if isinstance(forest_info, str) or isinstance(forest_info, unicode):
-                new_forest = Forest(forest_info, host=self.hostname)
-                new_forest.create(connection)
-                forest_names.append(forest_info)
+        # unicode doesn't exist in Python 3
+        if sys.version_info[0] < 3:
+            for forest_info in self.config['forest']:
+                if isinstance(forest_info, str) or isinstance(forest_info, unicode):
+                    new_forest = Forest(forest_info, host=self.hostname)
+                    new_forest.create(connection)
+                    forest_names.append(forest_info)
 
-            elif isinstance(forest_info, Forest):
-                forest_info.create(connection)
-                forest_names.append(forest_info.name())
+                elif isinstance(forest_info, Forest):
+                    forest_info.create(connection)
+                    forest_names.append(forest_info.name())
+        else:
+            for forest_info in self.config['forest']:
+                if isinstance(forest_info, str):
+                    new_forest = Forest(forest_info, host=self.hostname)
+                    new_forest.create(connection)
+                    forest_names.append(forest_info)
+
+                elif isinstance(forest_info, Forest):
+                    forest_info.create(connection)
+                    forest_names.append(forest_info.name())
 
         self.config['forest'] = forest_names
 

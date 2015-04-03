@@ -1,6 +1,7 @@
 .idea
 build
 dist
-marklogic-egg.info
+marklogic.egg-info
 *.pyc
-
+setup.cfg
+resources.py
