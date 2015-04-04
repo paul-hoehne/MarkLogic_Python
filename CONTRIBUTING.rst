@@ -91,7 +91,7 @@ Create a branch for your changes
 Okay, so you have decided to fix something. Create a feature branch and
 start hacking:
 
-.. code:: sh
+.. code:: console
 
    $ git checkout -b my-feature-branch -t origin/master
 
@@ -107,7 +107,7 @@ Commit your changes
 
 Make sure git knows your name and email address:
 
-.. code:: sh
+.. code:: console
 
    $ git config --global user.name "J. Random User"
    $ git config --global user.email "j.random.user@example.com"
@@ -145,7 +145,7 @@ Rebase your repo
 Use ``git rebase`` (not ``git merge``) to sync your work from time to
 time.
 
-.. code:: sh
+.. code:: console
 
    $ git fetch upstream
    $ git rebase upstream/master
@@ -161,7 +161,7 @@ example.py to ensure that it still works correctly.
 Push your changes
 ^^^^^^^^^^^^^^^^^
 
-.. code:: sh
+.. code:: console
 
    $ git push origin my-feature-branch
 
