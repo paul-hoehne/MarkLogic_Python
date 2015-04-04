@@ -30,7 +30,7 @@ from .forest import Forest
 from .utilities import files
 from .utilities.validators import *
 from .utilities.exceptions import *
-from .index import ElementAttributeRange, ElementRange, FieldRange
+from .index import Field, ElementAttributeRange, ElementRange, FieldRange
 
 """
 Database related classes for manipulating MarkLogic databases
@@ -1631,11 +1631,13 @@ class Database:
         return self
 
     def fields(self, field_idx):
-        if 'fields' not in self.config:
+        if 'field' not in self.config:
             return None
-        if field_idx >= len(self.config['fields']):
+        if field_idx >= len(self.config['field']):
             return None
-        return self.config['fields'][field_idx]
+        result = Field("temp")
+        result.config = self.config['field'][field_idx]
+        return result
 
     def get_document(self, conn, document_uri, content_type='*/*'):
         doc_url = "http://{0}:{1}/v1/documents?uri={2}&database={3}".format(conn.host, conn.port, document_uri,

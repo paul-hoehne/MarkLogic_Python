@@ -19,23 +19,16 @@ from __future__ import unicode_literals, print_function, absolute_import
 # File History
 # ------------
 #
-# Paul Hoehne       03/26/2015     Initial development
+# Paul Hoehne       04/02/2015     Initial development
 #
 
-import unittest
-from marklogic.models import Connection, Host
-from requests.auth import HTTPDigestAuth
-from resources import TestConnection as tc
+import requests
+import json
 
 
-class TestHost(unittest.TestCase):
+class Role(object):
+    def __init__(self):
+        self.config = {}
 
-    def test_list_hosts(self):
-        conn = Connection(tc.hostname, HTTPDigestAuth(tc.admin, tc.password))
 
-        hosts = Host.list_hosts(conn)
-        self.assertGreater(len(hosts), 0)
-        self.assertIsNotNone(hosts[0])
 
-if __name__ == "__main__":
-    unittest.main()
