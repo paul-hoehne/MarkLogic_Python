@@ -28,6 +28,6 @@ Edit this file to create test settings applicable to your system.
 """
 
 class DatabaseSettings(object):
-    large_data_directory = "/data/large"
-    fast_data_directory = "/data/fast"
+    large_data_directory = ""
+    fast_data_directory = ""
 

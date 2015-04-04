@@ -26,6 +26,7 @@ from marklogic.tools import MLCPLoader
 from marklogic.models import Connection
 from marklogic.recipes import SimpleDatabase
 from requests.auth import HTTPDigestAuth
+from resources import TestConnection as tc
 
 class TestMLCPDownload(unittest.TestCase):
 
@@ -50,10 +51,12 @@ class TestMLCPDownload(unittest.TestCase):
         self.assertFalse(os.path.isdir(".mlcp"))
 
     def test_load_data(self):
-        simpledb = SimpleDatabase("exmaple_app", port=8400)
+        simpledb = SimpleDatabase("example_app", port=8400)
 
-        auth = HTTPDigestAuth("admin", "admin")
-        conn = Connection("192.168.57.141", auth)
+        conn = Connection(tc.hostname, HTTPDigestAuth(tc.admin, tc.password))
+
+##        auth = HTTPDigestAuth("admin", "admin")
+##        conn = Connection("192.168.1.11", auth)
 
         exampledb = simpledb.create(conn)
 
@@ -73,3 +76,6 @@ class TestMLCPDownload(unittest.TestCase):
 
             exampledb[u'modules'].remove(conn)
             exampledb[u'content'].remove(conn)
+
+if __name__ == "__main__":
+    unittest.main()
