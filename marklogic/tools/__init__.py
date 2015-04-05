@@ -73,6 +73,9 @@ class MLCPLoader():
 
         command_path = os.path.join(".mlcp", "mlcp", "bin", which_script)
 
+        if platform.system() != "Windows":
+            command_path = "sh " + command_path
+
         if collections:
             collections_command = "-output_collections \"{0}\"".format(",".join(collections))
         else:
