@@ -23,16 +23,17 @@ import unittest
 import os
 import time
 from marklogic.tools import MLCPLoader
-from marklogic.models import Connection
+from marklogic.models import Connection, Host
 from marklogic.recipes import SimpleDatabase
 from requests.auth import HTTPDigestAuth
 from resources import TestConnection as tc
+import shutil
 
 class TestMLCPDownload(unittest.TestCase):
 
     def setUp(self):
         if os.path.isdir(".mlcp"):
-            os.popen("rm -rf .mlcp")
+           shutil.rmtree(".mlcp")
 
     def test_download(self):
         loader = MLCPLoader()
@@ -54,17 +55,14 @@ class TestMLCPDownload(unittest.TestCase):
         simpledb = SimpleDatabase("example_app", port=8400)
 
         conn = Connection(tc.hostname, HTTPDigestAuth(tc.admin, tc.password))
-
-##        auth = HTTPDigestAuth("admin", "admin")
-##        conn = Connection("192.168.1.11", auth)
-
-        exampledb = simpledb.create(conn)
+        hostname = Host.list_hosts(conn)[0].host_name()
+        exampledb = simpledb.create(conn, hostname)
 
         loader = MLCPLoader()
         loader.download_mlcp()
 
         try:
-            loader.load_directory(conn, exampledb[u'content'], "../../examples/data",
+            loader.load_directory(conn, exampledb[u'content'], os.path.join("..", "..", "examples", "data"),
                                   collections=["example1"], prefix="/test/data1")
             self.assertIsNotNone(exampledb[u'content'].get_document(conn, "/test/data1/purchases/december/purchase-001.json"))
             self.assertIsNotNone(exampledb[u'content'].get_document(conn, "/test/data1/customer-001.json"))

@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals, print_function, absolute_import
+
 #
 # Copyright 2015 MarkLogic Corporation
 #
@@ -20,8 +23,10 @@
 #
 
 import os
-import urllib2
-import re
+import requests
+import zipfile
+import platform
+import shutil
 
 
 """
@@ -41,23 +46,32 @@ class MLCPLoader():
 
     def clear_directory(self):
         if os.path.isdir(".mlcp"):
-            os.popen("rm -rf .mlcp")
+            shutil.rmtree(".mlcp")
 
     def download_mlcp(self):
         os.mkdir(".mlcp")
-        request = urllib2.urlopen("http://developer.marklogic.com/download/binaries/mlcp/mlcp-Hadoop2-1.3-1-bin.zip")
-        with open(".mlcp/mlcp.zip", "wb") as bin_file:
-            data = request.read()
-            bin_file.write(data)
+        mlcp_url = "http://developer.marklogic.com/download/binaries/mlcp/mlcp-Hadoop2-1.3-1-bin.zip"
+        archive_path = os.path.join(".mlcp", "mlcp.zip")
+        chunk_size = 16 * 1024
 
-        os.popen("cd .mlcp; unzip mlcp.zip")
-        files = os.listdir(".mlcp")
-        for file in files:
-            if re.match(r"[\w\-]+(\d\.\d).*", file):
-                os.popen("cd .mlcp; mv {0} mlcp; rm mlcp.zip".format(file))
+        response = requests.get(mlcp_url, stream=True)
+        with open(archive_path, "wb") as bin_file:
+            for chunk in response.iter_content(chunk_size):
+                bin_file.write(chunk)
+
+        archive = zipfile.ZipFile(archive_path)
+        archive.extractall(os.path.join(".mlcp"))
+        for filename in os.listdir(".mlcp"):
+            if filename.find("Hadoop") > -1:
+                os.rename(os.path.join(".mlcp", filename), os.path.join(".mlcp", "mlcp"))
+
 
     def load_directory(self, conn, database, data_directory, collections=None, prefix=''):
-        command_path = ".mlcp/mlcp/bin/mlcp.sh"
+        which_script = "mlcp.sh"
+        if platform.system() == "Windows":
+            which_script = "mlcp.bat"
+
+        command_path = os.path.join(".mlcp", "mlcp", "bin", which_script)
 
         if collections:
             collections_command = "-output_collections \"{0}\"".format(",".join(collections))
@@ -67,9 +81,12 @@ class MLCPLoader():
         command_line = "{0} import -username {1} -password {2} -host {3} -port {4} -database {5} {6} " \
                        "-input_file_path {7} -output_uri_replace \"{8},'{9}'\""
 
+        full_path = os.path.abspath(data_directory)
+        if platform.system() == "Windows":
+            full_path = "/" + full_path.replace("\\", "/")
         run_line = command_line.format(command_path, conn.auth.username, conn.auth.password, conn.host,
-                                       conn.port, database.database_name(), collections_command, data_directory,
-                                       os.path.abspath(data_directory), prefix)
+                                       conn.port, database.database_name(), collections_command,
+                                       full_path, full_path, prefix)
         with os.popen(run_line) as in_file:
             for line in in_file:
                 print(line.rstrip())
