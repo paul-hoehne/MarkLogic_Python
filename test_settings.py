@@ -30,6 +30,7 @@ You will find the current root data directory on the ML Admin Forests Summary pa
 """
 
 class DatabaseSettings(object):
-    large_data_directory = "/data/marklogic"
-    fast_data_directory = "/data/marklogic"
+    large_data_directory = ""
+    fast_data_directory = ""
+    data_directory = ""
 

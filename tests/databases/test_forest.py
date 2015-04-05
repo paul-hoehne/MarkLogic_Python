@@ -34,8 +34,9 @@ class TestForest(unittest.TestCase):
         pass
 
     def test_getters_and_setters(self):
-        forest = Forest("Foo", host="bar", data_directory="/foo/bar", large_data_directory="/foo/bar",
-                        fast_data_directory="/foo/bar")
+        forest = Forest("Foo", host="bar", data_directory=ds.data_directory,
+                        large_data_directory=ds.large_data_directory,
+                        fast_data_directory=ds.fast_data_directory)
 
         self.assertEqual(forest.name(), "Foo")
 
@@ -47,14 +48,14 @@ class TestForest(unittest.TestCase):
 
         self.assertEqual("bar", forest.host())
 
-        self.assertEqual("/foo/bar", forest.data_directory())
+        self.assertEqual(ds.data_directory, forest.data_directory())
 
         forest.set_database("foo")
         self.assertEqual("foo", forest.database())
 
-        self.assertEqual("/foo/bar", forest.fast_data_directory())
+        self.assertEqual(ds.fast_data_directory, forest.fast_data_directory())
 
-        self.assertEqual("/foo/bar", forest.large_data_directory())
+        self.assertEqual(ds.large_data_directory, forest.large_data_directory())
 
     def test_create_forest(self):
         conn = Connection(tc.hostname, HTTPDigestAuth(tc.admin, tc.password))
