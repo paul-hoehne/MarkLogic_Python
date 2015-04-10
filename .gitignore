@@ -5,3 +5,5 @@ marklogic.egg-info
 *.pyc
 setup.cfg
 resources.py
+test_settings.py
+
