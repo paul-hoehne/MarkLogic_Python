@@ -1,0 +1,4 @@
+include README.rst
+include CONTRIBUTING.rst
+include CHANGES.rst
+prune tests

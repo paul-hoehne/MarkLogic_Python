@@ -17,30 +17,52 @@
 # Note that this code was taken from an example on using PyPi.
 #
 
+import os
+from setuptools import setup, find_packages
+
 __author__ = 'phoehne'
 
-from setuptools import setup, find_packages
+
+def _long_description():
+    """A long reStructuredText description for PiPI
+    """
+    this_directory = os.path.dirname(os.path.abspath(__file__))
+    parts = []
+    for name in ('README.rst', 'CONTRIBUTING.rst', 'CHANGES.rst'):
+        parts.append(open(os.path.join(this_directory, name), 'r').read().strip())
+    return '\n\n'.join(parts)
+
 setup(
     name="marklogic",
     version="0.0.1",
-    packages=["marklogic", "marklogic.models", "marklogic.recipes", "marklogic.tools", "marklogic.models.utilities"],
-
-    # Project uses reStructuredText, so ensure that the docutils get
-    # installed or upgraded on the target machine
+    packages=find_packages(exclude=['tests']),
     install_requires=[
         'requests>=2.5.0'
     ],
-
     include_package_data=True,
     zip_safe=False,
     platforms='any',
 
-    # metadata for upload to PyPI
-    author = "Paul Hoehne",
-    author_email = "paul.hoehne@marklogic.com",
-    description = "MarkLogic package for maintaining servers",
-    license = "Apache",
-    keywords = "MarkLogic rest management",
-    url = "http://github.com/paul-hoehne/MarkLogic_Python/",   # project home page, if any
+    # Metadata for upload to PyPI
+    author="Paul Hoehne",
+    author_email="paul.hoehne@marklogic.com",
+    description="MarkLogic package for maintaining servers",
+    long_description=_long_description(),
+    license="Apache",
+    keywords="MarkLogic rest management",
+    classifiers=[
+        # Valid classifiers:
+        # https://pypi.python.org/pypi?%3Aaction=list_classifiershttps://pypi.python.org/pypi?%3Aaction=list_classifiers
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.4",
+        "Topic :: Database :: Front-Ends"
+    ],
+    url="https://github.com/paul-hoehne/MarkLogic_Python/",   # project home page, if any
 
+    # Others
+    test_suite='tests.all_tests'
 )
