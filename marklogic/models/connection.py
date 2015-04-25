@@ -19,6 +19,8 @@
 # Paul Hoehne       03/01/2015     Initial development
 #
 
+from requests.auth import HTTPDigestAuth
+
 """
 Connection related classes and method to connect to MarkLogic.
 """
@@ -35,3 +37,7 @@ class Connection:
         self.port = port
         self.management_port = management_port
         self.auth = auth
+
+    @classmethod
+    def make_connection(cls, host, username, password):
+        return Connection(host, HTTPDigestAuth(username, password))

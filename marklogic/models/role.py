@@ -41,13 +41,112 @@ class Role(object):
         return self.config['role-name']
 
     def create(self, connection):
-        pass
+        """
+        Creates the Role on the MarkLogic server.
+
+        :param connection: The connection to a MarkLogic server
+        :return: The Role object
+        """
+        uri = "http://{0}:{1}/manage/v2/roles".format(connection.host, connection.management_port)
+
+        response = requests.post(uri, json=self.config, auth=connection.auth)
+        if response.status_code not in [200, 201, 204]:
+            raise exceptions.UnexpectedManagementAPIResponse(response.text)
+
+        return self
 
     def save(self, connection):
-        pass
+        uri = "http://{0}:{1}/manage/v2/roles/{2}/properties".format(connection.host, connection.management_port,
+                                                                     self.config[u'role-name'])
+        response = requests.put(uri, json=self.config, auth=connection.auth)
+
+        if response.status_code not in [200, 204]:
+            raise exceptions.UnexpectedManagementAPIResponse(response.text)
+
+        return self
 
     def remove(self, connection):
-        pass
+        uri = "http://{0}:{1}/manage/v2/roles/{2}".format(connection.host, connection.management_port,
+                                                          self.config[u'role-name'])
+        response = requests.delete(uri, auth=connection.auth)
+
+        if response.status_code not in [200, 204] and not response.status_code == 404:
+            raise exceptions.UnexpectedManagementAPIResponse(response.text)
+
+        return self
+
+    def add_parent_role(self, role_name):
+        """
+        Add a parent role to given role
+
+        :param role_name: The name of the parent role
+        :return: The role object
+        """
+        if "role" not in self.config:
+            self.config['role'] = [role_name]
+        else:
+            self.config['role'].push(role_name)
+        return self
+
+    def parent_roles(self):
+        """
+        Returns the parent roles
+
+        :return:The list of roles
+        """
+        if "role" not in self.config:
+            return None
+        return self.config['role']
+
+    def set_description(self, description):
+        """
+        Set the description for the role
+
+        :param description: A description for the role
+        :return:The role object
+        """
+        self.config['description'] = description
+        return self
+
+    def description(self):
+        """
+        Returns the description for the role.
+
+        :return:The role description
+        """
+        if 'description' not in self.config:
+            return None
+        return self.config['description']
+
+    def add_privilege(self, name, action, kind):
+        """
+        Add a new privilege to the list of role privileges.
+
+        :param name: The name of the privilege
+        :param action: The action
+        :param kind: The kind of permission
+        :return:The role object
+        """
+        if 'privilege' not in self.config:
+            self.config['privilege'] = [
+                {'privilege-name': name, 'action': action, 'kind': kind}
+            ]
+        else:
+            self.config['privilege'].push({
+                'privilege-name': name, 'action': action, 'kind': kind
+            })
+        return self
+
+    def privileges(self):
+        """
+        Returns the privileges for a given role
+
+        :return:The list of privileges
+        """
+        if 'privilege' not in self.config:
+            return None
+        return self.config['privilege']
+
 
     @classmethod
     def list_roles(cls, connection):
