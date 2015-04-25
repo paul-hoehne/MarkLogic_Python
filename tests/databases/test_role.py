@@ -100,8 +100,26 @@ class TestRole(unittest.TestCase):
 
         role.remove(connection)
 
+    def test_parent_roles(self):
+        role = Role("foo-role")
 
+        role.add_parent_role("bar-role")
+        role.add_parent_role("baz-role")
 
+        self.assertEqual(2, len(role.parent_roles()))
+        self.assertTrue("bar-role" in role.parent_roles())
+        self.assertTrue("baz-role" in role.parent_roles())
+
+    def test_privileges(self):
+        role = Role("foo-role")
+
+        role.add_privilege("bar-priv", "http://foo.bar.com/add", "execute")
+        role.add_privilege("baz-priv", "http://foo.bar.com/update", "execute")
+
+        self.assertEqual(2, len(role.privileges()))
+        self.assertEqual("bar-priv", role.privileges()[0]['privilege-name'])
+        self.assertEqual('http://foo.bar.com/add', role.privileges()[0]['action'])
+        self.assertEqual('execute', role.privileges()[0]['kind'])
 
 if __name__ == "__main__":
     unittest.main()

@@ -85,7 +85,7 @@ class Role(object):
         if "role" not in self.config:
             self.config['role'] = [role_name]
         else:
-            self.config['role'].push(role_name)
+            self.config['role'].append(role_name)
         return self
 
     def parent_roles(self):
@@ -132,7 +132,7 @@ class Role(object):
                 {'privilege-name': name, 'action': action, 'kind': kind}
             ]
         else:
-            self.config['privilege'].push({
+            self.config['privilege'].append({
                 'privilege-name': name, 'action': action, 'kind': kind
             })
         return self
