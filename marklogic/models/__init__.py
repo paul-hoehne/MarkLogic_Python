@@ -20,3 +20,4 @@ from .forest import Forest
 from .index import ElementRange, ElementAttributeRange, FieldRange, Field, FieldReference
 from .server import HttpServer, XdbcServer
 from .host import Host
+from .role import Role
