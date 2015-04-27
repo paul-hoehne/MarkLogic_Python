@@ -27,6 +27,7 @@ import requests
 import zipfile
 import platform
 import shutil
+import subprocess
 
 
 """
@@ -65,16 +66,20 @@ class MLCPLoader():
             if filename.find("Hadoop") > -1:
                 os.rename(os.path.join(".mlcp", filename), os.path.join(".mlcp", "mlcp"))
 
-
     def load_directory(self, conn, database, data_directory, collections=None, prefix=''):
-        which_script = "mlcp.sh"
-        if platform.system() == "Windows":
-            which_script = "mlcp.bat"
+        mlcp_path = self.mlcp_path()
+        if not mlcp_path:
+            which_script = "mlcp.sh"
+            if platform.system() == "Windows":
+                which_script = "mlcp.bat"
 
-        command_path = os.path.join(".mlcp", "mlcp", "bin", which_script)
+            mlcp_path = os.path.join(".mlcp", "mlcp", "bin", which_script)
+
+            if not os.path.exists(mlcp_path):
+                self.download_mlcp()
 
         if platform.system() != "Windows":
-            command_path = "sh " + command_path
+            subprocess.call(["chmod", "+x", mlcp_path])
 
         if collections:
             collections_command = "-output_collections \"{0}\"".format(",".join(collections))
@@ -87,14 +92,29 @@ class MLCPLoader():
         full_path = os.path.abspath(data_directory)
         if platform.system() == "Windows":
             full_path = "/" + full_path.replace("\\", "/")
-        run_line = command_line.format(command_path, conn.auth.username, conn.auth.password, conn.host,
+        run_line = command_line.format(mlcp_path, conn.auth.username, conn.auth.password, conn.host,
                                        conn.port, database.database_name(), collections_command,
                                        full_path, full_path, prefix)
         with os.popen(run_line) as in_file:
             for line in in_file:
                 print(line.rstrip())
 
+    def mlcp_installed(self):
+        paths = os.environ["PATH"].split(os.pathsep)
+        return True in [t.endswith("mlcp/bin") or t.endswith("mlcp\\bin") for t in paths]
 
+    def mlcp_path(self):
+        if platform.system() == "Windows":
+            for path in os.environ["PATH"].split(os.pathsep):
+                full_path = os.path.abspath(os.path.join(path, "mlcp.bat"))
+                if os.path.exists(full_path):
+                    return full_path
+        else:
+            for path in os.environ["PATH"].split(os.pathsep):
+                full_path = os.path.abspath(os.path.join(path, "mlcp.sh"))
+                if os.path.exists(full_path):
+                    return full_path
+        return None
 
 
 class Watcher():
