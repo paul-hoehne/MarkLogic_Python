@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals, print_function, absolute_import
+
 #
 # Copyright 2015 MarkLogic Corporation
 #
@@ -17,6 +20,8 @@
 # ------------
 #
 # Paul Hoehne       03/09/2015     Initial development
+# Paul Hoehne       04/25/2015     Adding check to see if MLCP is already
+#                                  in the user path.
 #
 
 import unittest
@@ -46,6 +51,7 @@ class TestMLCPDownload(unittest.TestCase):
 
     def test_clear_directory(self):
         os.mkdir(".mlcp")
+
         loader = MLCPLoader()
         loader.clear_directory()
 
@@ -74,6 +80,12 @@ class TestMLCPDownload(unittest.TestCase):
 
             exampledb[u'modules'].remove(conn)
             exampledb[u'content'].remove(conn)
+
+    def test_mlcp_in_path(self):
+        loader = MLCPLoader()
+        os.putenv("PATH", os.environ["PATH"] + os.pathsep + (os.path.join(["mlcp", "bin"]))[0])
+
+        self.assertTrue(loader.mlcp_installed())
 
 if __name__ == "__main__":
     unittest.main()
