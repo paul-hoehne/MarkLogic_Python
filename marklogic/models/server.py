@@ -38,7 +38,14 @@ class HttpServer:
         if content_db_name:
             self.config[u'content-database'] = content_db_name
 
-    def set_url_rewriter(self, which="/rewriter.sjs"):
+    def default_user(self):
+        return self.config[u'default-user']
+
+    def set_default_user(self, user):
+        self.config[u'default-user'] = user
+        return self
+
+   def set_url_rewriter(self, which="/rewriter.sjs"):
         self.config[u'url-rewriter'] = which
         return self
 
