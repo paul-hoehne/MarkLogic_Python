@@ -21,3 +21,4 @@ from .index import ElementRange, ElementAttributeRange, FieldRange, Field, Field
 from .server import HttpServer, XdbcServer
 from .host import Host
 from .role import Role
+from .user import User
