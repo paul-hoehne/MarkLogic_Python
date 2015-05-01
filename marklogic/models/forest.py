@@ -47,16 +47,16 @@ class Forest:
             'forest-name': name
         }
 
-        if data_directory:
+        if data_directory is not None:
             self.config['data-directory'] = data_directory
 
-        if large_data_directory:
+        if large_data_directory is not None:
             self.config['large-data-directory'] = large_data_directory
 
-        if fast_data_directory:
+        if fast_data_directory is not None:
             self.config['fast-data-directory'] = fast_data_directory
 
-        if host:
+        if host is not None:
             self.config['host'] = host
         else:
             self.config['host'] = socket.gethostname().lower()
@@ -86,7 +86,9 @@ class Forest:
 
         :return: The asociated database
         """
-        return self.config['database']
+        if 'database' in self.config:
+            return self.config['database']
+        return None
 
     def data_directory(self):
         """
@@ -94,7 +96,9 @@ class Forest:
 
         :return: The data directory path
         """
-        return self.config['data-directory']
+        if 'data-directory' in self.config:
+            return self.config['data-directory']
+        return None
 
     def large_data_directory(self):
         """
@@ -102,7 +106,9 @@ class Forest:
 
         :return:The large data directory path
         """
-        return self.config['large-data-directory']
+        if 'large-data-directory' in self.config:
+            return self.config['large-data-directory']
+        return None
 
     def fast_data_directory(self):
         """
@@ -110,7 +116,9 @@ class Forest:
 
         :return:The fast data directory
         """
-        return self.config['fast-data-directory']
+        if 'fast-data-directory' in self.config:
+            return self.config['fast-data-directory']
+        return None
 
     def set_availability(self, which='online'):
         """
@@ -129,7 +137,9 @@ class Forest:
 
         :return: Availability status
         """
-        return self.properties['availability']
+        if 'availability' in self.properties:
+            return self.properties['availability']
+        return None
 
     def name(self):
         """
