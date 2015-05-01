@@ -47,7 +47,7 @@ class TestMLCPDownload(unittest.TestCase):
         loader.download_mlcp()
         dir_stat = os.stat(".mlcp")
 
-        self.assertIsNotNone(dir_stat, "There shoudld be an mlcp subdirectory created")
+        self.assertIsNotNone(dir_stat, "There should be an mlcp subdirectory created")
 
     def test_clear_directory(self):
         os.mkdir(".mlcp")
@@ -68,7 +68,7 @@ class TestMLCPDownload(unittest.TestCase):
         loader.download_mlcp()
 
         try:
-            loader.load_directory(conn, exampledb[u'content'], os.path.join("..", "..", "examples", "data"),
+            loader.load_directory(conn, exampledb[u'content'], os.path.join("examples", "data"),
                                   collections=["example1"], prefix="/test/data1")
             self.assertIsNotNone(exampledb[u'content'].get_document(conn, "/test/data1/purchases/december/purchase-001.json"))
             self.assertIsNotNone(exampledb[u'content'].get_document(conn, "/test/data1/customer-001.json"))
@@ -80,12 +80,6 @@ class TestMLCPDownload(unittest.TestCase):
 
             exampledb[u'modules'].remove(conn)
             exampledb[u'content'].remove(conn)
-
-    def test_mlcp_in_path(self):
-        loader = MLCPLoader()
-        os.putenv("PATH", os.environ["PATH"] + os.pathsep + (os.path.join(["mlcp", "bin"]))[0])
-
-        self.assertTrue(loader.mlcp_installed())
 
 if __name__ == "__main__":
     unittest.main()
