@@ -1,0 +1,18 @@
+language: python
+python:
+  - "3.4"
+
+before_install:
+  # set Pacific time for ML download (look for the right nightly)
+  - echo 'America/Los_Angeles' | sudo tee /etc/timezone
+  - sudo dpkg-reconfigure --frontend noninteractive tzdata
+
+install:
+  # install/start MarkLogic,
+  # (first downloading, converting to a .deb)
+  - 'if [ "${TRAVIS_SECURE_ENV_VARS}" = "true" ] ; then ./shared/dev-tasks/travis-install-ml.sh release ; else (exit 0) ; fi'
+  - 'if [ "${TRAVIS_SECURE_ENV_VARS}" = "true" ] ; then sudo /etc/init.d/MarkLogic start ; else (exit 0) ; fi'
+
+script:
+  - python run_tests.py
+
