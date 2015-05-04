@@ -3,6 +3,8 @@ python:
   - "3.4"
 
 before_install:
+  - pip install requests
+
   # set Pacific time for ML download (look for the right nightly)
   - echo 'America/Los_Angeles' | sudo tee /etc/timezone
   - sudo dpkg-reconfigure --frontend noninteractive tzdata
