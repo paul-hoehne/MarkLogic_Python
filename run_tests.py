@@ -6,4 +6,9 @@ if '' not in sys.path:
 import unittest
 from tests import all_tests
 
-unittest.TextTestRunner(verbosity=2).run(all_tests())
+result = unittest.TextTestRunner(verbosity=2).run(all_tests())
+
+if result.wasSuccessful():
+    sys.exit(0)
+else:
+    sys.exit(1)
