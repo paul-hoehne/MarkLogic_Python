@@ -13,9 +13,8 @@ function successOrExit {
 
 test $1 && arg1=$1
 if [[ $arg1 = 'release' ]]; then
-
-  fname=MarkLogic-8.0-1.1.x86_64.rpm
-  ver=8.0-1.1
+  fname=MarkLogic-8.0-2.x86_64.rpm
+  ver=8.0-2
   fnamedeb="marklogic_"
   fnamedeb=$fnamedeb$ver
   suff="_amd64.deb"
@@ -36,12 +35,11 @@ if [[ $arg1 = 'release' ]]; then
     sudo alien -d -k $fname
     sudo dpkg -i $fnamedeb
 
-    echo "********* MarkLogic nightly $ver installed"
+    echo "********* MarkLogic $ver installed"
   else
     echo "CANNOT DOWNLOAD: status = $status for version $ver (URL=secure/suppressed)"
     exit 1
   fi
-
 else
   # find today
   day=$(date +"%Y%m%d")
@@ -51,7 +49,7 @@ else
   # make a version number out of the date
   ver="8.0-$day"
 
-  echo "********* Will be using MarkLogic nightly $ver"
+  echo "********* Downloading MarkLogic nightly $ver"
 
   # fetch/install ML nightly
   fname="MarkLogic-$ver.x86_64.rpm"
@@ -61,8 +59,6 @@ else
   fnamedeb=$fnamedeb$suff
 
   url="http://root.marklogic.com/nightly/builds/linux64/rh6-intel64-80-test-1.marklogic.com/HEAD/pkgs.$day/$fname"
-  echo "********* Downloading MarkLogic nightly $ver"
-
 
   status=$(curl -k --anyauth -u $MLBUILD_USER:$MLBUILD_PASSWORD --head --write-out %{http_code} --silent --output /dev/null $url)
   if [[ $status = 200 ]]; then
