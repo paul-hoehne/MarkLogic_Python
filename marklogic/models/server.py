@@ -45,7 +45,7 @@ class HttpServer:
         self.config[u'default-user'] = user
         return self
 
-   def set_url_rewriter(self, which="/rewriter.sjs"):
+    def set_url_rewriter(self, which="/rewriter.sjs"):
         self.config[u'url-rewriter'] = which
         return self
 

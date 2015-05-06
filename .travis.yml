@@ -1,0 +1,25 @@
+language: python
+
+python:
+  - '3.4'
+
+env:
+  global:
+  - secure: pD3KJzh+PVlok3LW52TGFizI4WKFtGvyumIZUt5y/tLM09QoafpfS2wMH8vYpgsrPmGnDyrNX0L9qFAbQgICPX3wc0JspJu/BDtXRcHdTbf8W7kaUFzrhw0OMPaWloWo+FQmeh65KqBn0duUxO+Gl2ooxFWtT2RJ+KFPuB4yGw8=
+  - secure: VyNZfQtx4cWNlFCHo56BiDQ6YVVbeJvEV1vHjWr946vSYVqOmlDDtDm147VZ37Wy4CA4q7GmZhQzHI3PTC4eUh0xARfWJ843K98Cy1IDJz/vNoTpi2f+W0ZzFAuvpsswggOCwDZW+oiaoE1L8n2RL9+SuzAmoFt2WLHcyOtGb+g=
+  - secure: N/eUScwkSZ9xmKH/nsEXSrAKgpZckHFDmZCbsbII/iDWgZDy9JmRI2kTN96T4V3G/tazPysNlz7OiKYRV7JOLUmkExXXA2nwzwb7SaVPiQ6lg74xngH6UNb7wvfvgFCUhCjQaSaynr1hDSaoZYDQALpP6+BeS3fcSzYrTXDXcek=
+
+before_install:
+  - pip install requests
+  - mv example_resources.py resources.py
+
+  # set Pacific time for ML download (look for the right nightly)
+  - echo 'America/Los_Angeles' | sudo tee /etc/timezone
+  - sudo dpkg-reconfigure --frontend noninteractive tzdata
+
+install:
+  - if [ "${TRAVIS_SECURE_ENV_VARS}" = "true" ] ; then ./shared/dev-tasks/travis-install-ml.sh release ; else (exit 0) ; fi
+  - if [ "${TRAVIS_SECURE_ENV_VARS}" = "true" ] ; then ./shared/dev-tasks/setup-marklogic.sh ; else (exit 0) ; fi
+
+script:
+- python run_tests.py
