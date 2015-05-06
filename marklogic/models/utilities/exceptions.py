@@ -44,3 +44,12 @@ class UnexpectedAPIResponse(MLClientException):
 
     """
     pass
+
+class InvalidValue(MLClientException):
+    """
+    This exception class is for exceptions that arise from attempts to
+    set properties to invalid values, passing a dictionary where a list
+    is expected, for example.
+
+    """
+    pass
