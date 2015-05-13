@@ -33,7 +33,7 @@ class TestHost(unittest.TestCase):
     def test_list_hosts(self):
         conn = Connection(tc.hostname, HTTPDigestAuth(tc.admin, tc.password))
 
-        hosts = Host.list_hosts(conn)
+        hosts = Host.list(conn)
         self.assertGreater(len(hosts), 0)
         self.assertIsNotNone(hosts[0])
 

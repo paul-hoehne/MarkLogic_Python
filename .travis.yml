@@ -8,6 +8,8 @@ env:
   - secure: pD3KJzh+PVlok3LW52TGFizI4WKFtGvyumIZUt5y/tLM09QoafpfS2wMH8vYpgsrPmGnDyrNX0L9qFAbQgICPX3wc0JspJu/BDtXRcHdTbf8W7kaUFzrhw0OMPaWloWo+FQmeh65KqBn0duUxO+Gl2ooxFWtT2RJ+KFPuB4yGw8=
   - secure: VyNZfQtx4cWNlFCHo56BiDQ6YVVbeJvEV1vHjWr946vSYVqOmlDDtDm147VZ37Wy4CA4q7GmZhQzHI3PTC4eUh0xARfWJ843K98Cy1IDJz/vNoTpi2f+W0ZzFAuvpsswggOCwDZW+oiaoE1L8n2RL9+SuzAmoFt2WLHcyOtGb+g=
   - secure: N/eUScwkSZ9xmKH/nsEXSrAKgpZckHFDmZCbsbII/iDWgZDy9JmRI2kTN96T4V3G/tazPysNlz7OiKYRV7JOLUmkExXXA2nwzwb7SaVPiQ6lg74xngH6UNb7wvfvgFCUhCjQaSaynr1hDSaoZYDQALpP6+BeS3fcSzYrTXDXcek=
+  - secure: nFsGgPuI7DiR86ojo5BFRl+OMXKd0MEHCZKGpxsR8ZkPttV7F16B2OqPDR5zC/h2CjdCouGyB+vhozlL5nbDArlb9bAJudEu+QlmN/+uiWVmW5vG4UZq37uZPgIveQl8rQ+eC5XkReUnsUzHsg4R1Ssgej2QYxZ2dOFxDvUGuXY=
+  - secure: ZI7Ic1CnQGTqfrfue5WibWvODi4xPKCghhBAG2KlszgnXw6gJzBwTYJyo/qSq1AKufuH7wDRWPoGGfdxuiD/qx/P8uOiDU7eO/4tAaWhSUilu35zw8uBTZyzloJxHnh4mzUj8oaS8ohatQRWVGCx0cPzeg+uRJncWWOQFCN7wXM=
 
 before_install:
   - pip install requests
@@ -18,7 +20,7 @@ before_install:
   - sudo dpkg-reconfigure --frontend noninteractive tzdata
 
 install:
-  - if [ "${TRAVIS_SECURE_ENV_VARS}" = "true" ] ; then ./shared/dev-tasks/travis-install-ml.sh release ; else (exit 0) ; fi
+  - if [ "${TRAVIS_SECURE_ENV_VARS}" = "true" ] ; then ./shared/dev-tasks/travis-install-ml.sh ; else (exit 0) ; fi
   - if [ "${TRAVIS_SECURE_ENV_VARS}" = "true" ] ; then ./shared/dev-tasks/setup-marklogic.sh ; else (exit 0) ; fi
 
 script:

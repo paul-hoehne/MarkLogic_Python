@@ -19,12 +19,16 @@
 # Paul Hoehne       03/01/2015     Initial development
 #
 
-
-__author__ = 'phoehne'
-
 import os, sys, stat
 
+"""
+MarkLogic file classes
+"""
+
 def walk_directories(current_directory):
+    """
+    Recursively walk a directory returning all of the files found.
+    """
     file_list = []
     for dir in os.listdir(current_directory):
         pathname = os.path.join(current_directory, dir)

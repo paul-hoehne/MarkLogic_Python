@@ -11,3 +11,28 @@ def all_tests():
     "run_tests.py" and "python setup.py test".
     """
     return unittest.defaultTestLoader.discover(tests_directory)
+
+def privilege_tests():
+    """Just the privilege tests.
+    """
+    return unittest.defaultTestLoader.discover(tests_directory + "/privileges")
+
+def forest_tests():
+    """Just the forest tests.
+    """
+    return unittest.defaultTestLoader.discover(tests_directory + "/forests")
+
+def database_tests():
+    """Just the database tests.
+    """
+    return unittest.defaultTestLoader.discover(tests_directory + "/databases")
+
+def server_tests():
+    """Just the server tests.
+    """
+    return unittest.defaultTestLoader.discover(tests_directory + "/servers")
+
+def tools_tests():
+    """Just the tools tests.
+    """
+    return unittest.defaultTestLoader.discover(tests_directory + "/tools")

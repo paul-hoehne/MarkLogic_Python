@@ -70,12 +70,3 @@ Support
 
 Support for the MarkLogic_Python project comes from the developer
 community.
-
-Running on Travis
-=================
-
-In order to run the unit tests automatically on Travis, you must
-provide secure environment variables that identify where and how you
-can download the server.
-
-Details TBD.

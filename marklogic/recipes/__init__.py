@@ -39,7 +39,7 @@ class Quickstart():
 class SimpleDatabase(Quickstart):
     def __init__(self, app_name, port=8100, forests=3):
         """
-        Factory class to acreate databases with an HTTP server and modules database.  The parts will be
+        Factory class to create databases with an HTTP server and modules database.  The parts will be
         named <app_name>_db for the database, <app_name>_modules_db for the modules database,
         and the HTTP server port will be on the given port.
 
@@ -66,12 +66,12 @@ class SimpleDatabase(Quickstart):
         :return:A map containing the content db, the modules db and the HTTP server.
         """
         data_database = Database(self._db_name, hostname)
-        data_database.set_forests(self._forests)
+        data_database.set_forest_names(self._forests)
 
         modules_database = Database(self._modules_db_name, hostname)
 
-        server = HttpServer(self._http_server, self._app_port, self._db_name)
-        server.set_modules_database(self._modules_db_name)
+        server = HttpServer(self._http_server, "Default", self._app_port, self._db_name, self._modules_db_name)
+        server.set_modules_database_name(self._modules_db_name)
 
         data_database.create(conn)
         modules_database.create(conn)

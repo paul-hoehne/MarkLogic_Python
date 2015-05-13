@@ -38,7 +38,7 @@ class TestForest(unittest.TestCase):
                         large_data_directory=ds.large_data_directory,
                         fast_data_directory=ds.fast_data_directory)
 
-        self.assertEqual(forest.name(), "Foo")
+        self.assertEqual(forest.forest_name(), "Foo")
 
         forest.set_availability("offline")
         self.assertEqual("offline", forest.availability())
@@ -60,18 +60,18 @@ class TestForest(unittest.TestCase):
     def test_create_forest(self):
         conn = Connection(tc.hostname, HTTPDigestAuth(tc.admin, tc.password))
 
-        host = Host.list_hosts(conn)[0]
+        host = Host.list(conn)[0]
 
-        forest = Forest("test-forest-simple-create", host=host.host_name(),
+        forest = Forest("test-forest-simple-create", host=host,
                         large_data_directory=ds.large_data_directory,
                         fast_data_directory=ds.fast_data_directory, )
         forest.create(conn)
 
-        forest = Forest.lookup("test-forest-simple-create", conn)
+        forest = Forest.lookup(conn, "test-forest-simple-create")
 
         try:
             self.assertIsNotNone(forest)
-            self.assertEqual("test-forest-simple-create", forest.name())
+            self.assertEqual("test-forest-simple-create", forest.forest_name())
             self.assertEqual(host.host_name(), forest.host())
             self.assertEqual(ds.large_data_directory, forest.large_data_directory())
             self.assertEqual(ds.fast_data_directory, forest.fast_data_directory())
