@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Copyright 2015 MarkLogic Corporation
 #
@@ -16,34 +17,36 @@
 # File History
 # ------------
 #
-# Paul Hoehne       03/26/2015     Initial development
-#
+# Norman Walsh      05/10/2015     Initial development
 
 """
-MarkLogic exception classes
+Classes for dealing with rulesets.
 """
 
-class MLClientException(Exception):
+class RuleSet:
     """
-    Base class for MarkLogic client exceptions.
-
+    A database rule set.
     """
-    pass
+    def __init__(self, location):
+        """
+        Create a rule set.
 
+        :param location: the ruleset location
+        """
+        self._config = {
+            'location': location
+            }
 
-class UnexpectedManagementAPIResponse(MLClientException):
-    """
-    This exception class is for exceptions that arise from unexpected management
-    API responses.
+    def location(self):
+        """
+        The location.
+        """
+        return self._config['location']
 
-    """
-    pass
+    def set_location(self, location):
+        """
+        Set the location.
+        """
+        self._config['location'] = location
+        return self
 
-
-class UnexpectedAPIResponse(MLClientException):
-    """
-    This exception class is for exceptions that arise from unexpected REST api
-    responses when dealing with search or documents.
-
-    """
-    pass

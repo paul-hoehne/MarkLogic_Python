@@ -141,7 +141,7 @@ class Forest:
             return self.properties['availability']
         return None
 
-    def name(self):
+    def forest_name(self):
         """
         Returns the name of the forest.
 
@@ -165,7 +165,7 @@ class Forest:
         if response.status_code > 299:
             raise Exception(response.text)
 
-        return Forest.lookup(self.config['forest-name'], connection)
+        return Forest.lookup(connection, self.config['forest-name'])
 
     def save(self, connection):
         """
@@ -200,7 +200,7 @@ class Forest:
         return self
 
     @classmethod
-    def lookup(cls, name, conn):
+    def lookup(cls, conn, name):
         """
         Look up a forest's configuration from the MarkLogic server.
 

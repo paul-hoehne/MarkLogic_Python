@@ -4,11 +4,7 @@ import sys
 if '' not in sys.path:
     sys.path.insert(0, '')
 import unittest
-from tests import all_tests
+from tests import all_tests, privilege_tests, forest_tests, database_tests
+from tests import server_tests, tools_tests
 
-result = unittest.TextTestRunner(verbosity=2).run(all_tests())
-
-if result.wasSuccessful():
-    sys.exit(0)
-else:
-    sys.exit(1)
+unittest.TextTestRunner(verbosity=2).run(all_tests())

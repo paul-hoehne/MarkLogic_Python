@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals, print_function, absolute_import
-
 #
 # Copyright 2015 MarkLogic Corporation
 #
@@ -22,29 +20,38 @@ from __future__ import unicode_literals, print_function, absolute_import
 # Paul Hoehne       03/26/2015     Initial development
 #
 
+"""
+Host related classes for manipulating MarkLogic hosts
+"""
+
+from __future__ import unicode_literals, print_function, absolute_import
 import requests
 import json
-from .utilities.exceptions import *
 
-
-class Host(object):
+class Host:
+    """
+    The Host class encapsulates a MarkLogic host.
+    """
     def __init__(self):
-        self.config = {}
+        """
+        Create a host.
+        """
+        self._config = {}
 
     def host_name(self):
         """
         Returns the host name of the cluster member
         :return: The member host name
         """
-        return self.config['host-name']
+        return self._config['host-name']
 
-    def group(self):
+    def group_name(self):
         """
         The cluster member's group
 
         :return: Host's Group
         """
-        return self.config['group']
+        return self._config['group']
 
     def bind_port(self):
         """
@@ -52,7 +59,7 @@ class Host(object):
 
         :return: The host's bind port
         """
-        return self.config['bind-port']
+        return self._config['bind-port']
 
     def foreign_bind_port(self):
         """
@@ -60,7 +67,7 @@ class Host(object):
 
         :return: The Host's foreign bind port
         """
-        return self.config['foreign-bind-port']
+        return self._config['foreign-bind-port']
 
     def zone(self):
         """
@@ -68,7 +75,7 @@ class Host(object):
 
         :return: The zone
         """
-        return self.config['zone']
+        return self._config['zone']
 
     def bootstrap_host(self):
         """
@@ -76,10 +83,10 @@ class Host(object):
 
         :return:Bootstrap host indicator
         """
-        return self.config['boostrap-host']
+        return self._config['boostrap-host']
 
     @classmethod
-    def lookup(cls, name, connection):
+    def lookup(cls, connection, name):
         """
         Look up an individual host within the cluster.
 
@@ -93,21 +100,24 @@ class Host(object):
         response = requests.get(uri, auth=connection.auth, headers={'accept': 'application/json'})
         if response.status_code == 200:
             result = Host()
-            result.config = json.loads(response.text)
+            result._config = json.loads(response.text)
         elif response.status_code != 404:
             raise UnexpectedManagementAPIResponse(response.text)
         return result
 
     @classmethod
-    def list_hosts(cls, connection):
+    def list(cls, connection):
         """
-        Lists the hosts available on this cluster.
+        Lists the names of hosts available on this cluster.
 
         :param connection: A connection to a MarkLogic server
-        :return: A list of hosts
+        :return: A list of host names
         """
-        uri = "http://{0}:{1}/manage/v2/hosts".format(connection.host, connection.management_port)
-        response = requests.get(uri, auth=connection.auth, headers={u'accept': u'application/json'})
+        uri = "http://{0}:{1}/manage/v2/hosts" \
+          .format(connection.host, connection.management_port)
+
+        response = requests.get(uri, auth=connection.auth,
+                                headers={u'accept': u'application/json'})
 
         if response.status_code == 200:
             response_json = json.loads(response.text)
@@ -116,7 +126,7 @@ class Host(object):
             result = []
             if host_count > 0:
                 for item in response_json['host-default-list']['list-items']['list-item']:
-                    result.append(Host.lookup(item['nameref'], connection))
+                    result.append(item['nameref'])
         else:
             raise UnexpectedManagementAPIResponse(response.text)
 

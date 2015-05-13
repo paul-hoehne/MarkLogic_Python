@@ -6,4 +6,4 @@ marklogic.egg-info
 setup.cfg
 resources.py
 test_settings.py
-
+docs/build/

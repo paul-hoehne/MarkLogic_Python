@@ -23,7 +23,7 @@ from __future__ import unicode_literals, print_function, absolute_import
 #
 
 import unittest
-from marklogic.models import Connection, Role
+from marklogic.models import Connection, Role, Privilege
 from resources import TestConnection as tc
 
 class TestRole(unittest.TestCase):
@@ -31,27 +31,26 @@ class TestRole(unittest.TestCase):
     def test_list(self):
         connection = Connection.make_connection(tc.hostname, tc.admin, tc.password)
 
-        roles = Role.list_roles(connection)
+        names = Role.list(connection)
 
-        names = [role.name() for role in roles]
         self.assertGreater(len(names), 65)
         self.assertIn("admin", names)
 
     def test_lookup(self):
         connection = Connection.make_connection(tc.hostname, tc.admin, tc.password)
 
-        role = Role.lookup("admin", connection)
+        role = Role.lookup(connection, "admin")
 
         self.assertIsNotNone(role)
-        self.assertEqual(role.name(), "admin")
+        self.assertEqual(role.role_name(), "admin")
 
     def test_create_role(self):
         new_role = Role("foo-role")
 
-        self.assertEqual(new_role.name(), "foo-role")
+        self.assertEqual(new_role.role_name(), "foo-role")
 
-        new_role.add_parent_role("admin")
-        self.assertIn("admin", new_role.parent_roles())
+        new_role.add_role_name("admin")
+        self.assertIn("admin", new_role.role_names())
 
     def test_description(self):
         role = Role("foo-role")
@@ -66,12 +65,10 @@ class TestRole(unittest.TestCase):
         action = "http://marklogic.com/xdmp/privileges/foodle"
         kind = "execute"
 
-        role.add_privilege(name, action, kind)
+        role.add_privilege(name, kind)
 
         priv = role.privileges()[0]
-        self.assertEqual(priv['privilege-name'], name)
-        self.assertEqual(priv['action'], action)
-        self.assertEqual(priv['kind'], kind)
+        self.assertEqual("execute|foodle",priv)
 
     def test_create_remove_role(self):
         connection = Connection.make_connection(tc.hostname, tc.admin, tc.password)
@@ -79,11 +76,11 @@ class TestRole(unittest.TestCase):
 
         role.create(connection)
 
-        the_role = Role.lookup("foo-role", connection)
+        the_role = Role.lookup(connection, "foo-role")
         self.assertIsNotNone(the_role)
 
-        the_role.remove(connection)
-        the_role = Role.lookup("foo-role", connection)
+        the_role.delete(connection)
+        the_role = Role.lookup(connection, "foo-role")
         self.assertIsNone(the_role)
 
     def test_save_role(self):
@@ -93,33 +90,31 @@ class TestRole(unittest.TestCase):
         self.assertIsNone(role.create(connection).description())
         role.set_description("This is the foo role")
 
-        role.save(connection)
+        role.update(connection)
 
-        role = Role.lookup("foo-role", connection)
+        role = Role.lookup(connection, "foo-role")
         self.assertEqual("This is the foo role", role.description())
 
-        role.remove(connection)
+        role.delete(connection)
 
-    def test_parent_roles(self):
+    def test_roles(self):
         role = Role("foo-role")
 
-        role.add_parent_role("bar-role")
-        role.add_parent_role("baz-role")
+        role.add_role_name("bar-role")
+        role.add_role_name("baz-role")
 
-        self.assertEqual(2, len(role.parent_roles()))
-        self.assertTrue("bar-role" in role.parent_roles())
-        self.assertTrue("baz-role" in role.parent_roles())
+        self.assertEqual(2, len(role.role_names()))
+        self.assertTrue("bar-role" in role.role_names())
+        self.assertTrue("baz-role" in role.role_names())
 
     def test_privileges(self):
         role = Role("foo-role")
 
-        role.add_privilege("bar-priv", "http://foo.bar.com/add", "execute")
-        role.add_privilege("baz-priv", "http://foo.bar.com/update", "execute")
+        role.add_privilege("bar-priv", "execute")
+        role.add_privilege("baz-priv", "execute")
 
         self.assertEqual(2, len(role.privileges()))
-        self.assertEqual("bar-priv", role.privileges()[0]['privilege-name'])
-        self.assertEqual('http://foo.bar.com/add', role.privileges()[0]['action'])
-        self.assertEqual('execute', role.privileges()[0]['kind'])
+        self.assertEqual("execute|bar-priv", role.privileges()[0])
 
 if __name__ == "__main__":
     unittest.main()

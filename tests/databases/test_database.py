@@ -25,6 +25,7 @@ from __future__ import unicode_literals, print_function, absolute_import
 
 import unittest
 from marklogic.models import Database, Connection, Host, Forest
+from marklogic.models.utilities.exceptions import UnexpectedManagementAPIResponse
 from requests.auth import HTTPDigestAuth
 from resources import TestConnection as tc
 from test_settings import DatabaseSettings as ds
@@ -46,24 +47,24 @@ class TestDatabase(unittest.TestCase):
         :return: None
         """
         conn = Connection(tc.hostname, HTTPDigestAuth(tc.admin, tc.password))
-        hosts = Host.list_hosts(conn)
-        db = Database("test-db", hosts[0].host_name())
+        hosts = Host.list(conn)
+        db = Database("test-db", hosts[0])
 
         db.create(conn)
 
-        validate_db = Database.lookup("test-db", conn)
+        validate_db = Database.lookup(conn, "test-db")
         try:
             self.assertIsNotNone(validate_db)
             self.assertEqual('test-db', validate_db.database_name())
 
         finally:
-            validate_db.remove(conn)
-            validate_db = Database.lookup("test-db", conn)
+            validate_db.delete(conn)
+            validate_db = Database.lookup(conn, "test-db")
             self.assertIsNone(validate_db)
 
     def test_no_database_found(self):
         conn = Connection(tc.hostname, HTTPDigestAuth(tc.admin, tc.password))
-        db = Database.lookup("No-Such-Database", conn)
+        db = Database.lookup(conn, "No-Such-Database")
 
         self.assertIsNone(db)
 
@@ -87,22 +88,23 @@ class TestDatabase(unittest.TestCase):
         """
         conn = Connection(tc.hostname, HTTPDigestAuth(tc.admin, tc.password))
 
-        hosts = Host.list_hosts(conn)
-        db = Database("simple-forest-create-test-db", hosts[0].host_name())
+        hosts = Host.list(conn)
+        db = Database("simple-forest-create-test-db", hosts[0])
 
-        db.set_forests(["simple-forest-create-forest1", "simple-forest-create-forest2"])
+        db.set_forest_names(["simple-forest-create-forest1",
+                             "simple-forest-create-forest2"])
 
         db.create(conn)
 
-        db = Database.lookup("simple-forest-create-test-db", conn)
+        db = Database.lookup(conn, "simple-forest-create-test-db")
         try:
-            self.assertEqual(2, len(db.forests()))
+            self.assertEqual(2, len(db.forest_names()))
 
-            self.assertIn("simple-forest-create-forest1", db.forests())
-            self.assertIn("simple-forest-create-forest2", db.forests())
+            self.assertIn("simple-forest-create-forest1", db.forest_names())
+            self.assertIn("simple-forest-create-forest2", db.forest_names())
 
         finally:
-            db.remove(conn)
+            db.delete(conn)
 
     def test_create_single_detailed_forest(self):
         """
@@ -116,23 +118,23 @@ class TestDatabase(unittest.TestCase):
 
         conn = Connection(tc.hostname, HTTPDigestAuth(tc.admin, tc.password))
 
-        hosts = Host.list_hosts(conn)
-        db = Database("detailed-forest-create-test-db", hosts[0].host_name())
+        hosts = Host.list(conn)
+        db = Database("detailed-forest-create-test-db", hosts[0])
 
-        forest = Forest("detailed-forest-create-forest1", host=hosts[0].host_name(),
+        forest = Forest("detailed-forest-create-forest1", host=hosts[0],
                         large_data_directory=ds.large_data_directory)
 
-        db.set_forests([forest])
+        db.set_forest_names([forest.forest_name()])
 
         db.create(conn)
 
-        forest = Forest.lookup("detailed-forest-create-forest1", conn)
+        forest = Forest.lookup(conn, "detailed-forest-create-forest1")
 
         try:
-            self.assertEqual("detailed-forest-create-forest1", forest.name())
+            self.assertEqual("detailed-forest-create-forest1", forest.forest_name())
             self.assertEqual(ds.large_data_directory, forest.large_data_directory())
         finally:
-            db.remove(conn)
+            db.delete(conn)
 
 if __name__ == "__main__":
     unittest.main()

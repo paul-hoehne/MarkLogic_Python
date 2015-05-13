@@ -14,11 +14,10 @@
 # limitations under the License.
 #
 
-from .connection import Connection
-from .database import Database
-from .forest import Forest
-from .index import ElementRange, ElementAttributeRange, FieldRange, Field, FieldReference
-from .server import HttpServer, XdbcServer
-from .host import Host
-from .role import Role
-from .user import User
+from marklogic.models.connection import Connection
+from marklogic.models.forest import Forest
+from marklogic.models.database import Database
+from marklogic.models.server import Server, HttpServer, XdbcServer, OdbcServer, WebDAVServer
+from marklogic.models.host import Host
+from marklogic.models.role import Role
+from marklogic.models.privilege import Privilege

@@ -61,25 +61,22 @@ class TestMLCPDownload(unittest.TestCase):
         simpledb = SimpleDatabase("example_app", port=8400)
 
         conn = Connection(tc.hostname, HTTPDigestAuth(tc.admin, tc.password))
-        hostname = Host.list_hosts(conn)[0].host_name()
+        hostname = Host.list(conn)[0]
         exampledb = simpledb.create(conn, hostname)
 
         loader = MLCPLoader()
         loader.download_mlcp()
 
         try:
-            loader.load_directory(conn, exampledb[u'content'], os.path.join("examples", "data"),
+            loader.load_directory(conn, exampledb['content'], os.path.join("examples", "data"),
                                   collections=["example1"], prefix="/test/data1")
-            self.assertIsNotNone(exampledb[u'content'].get_document(conn, "/test/data1/purchases/december/purchase-001.json"))
-            self.assertIsNotNone(exampledb[u'content'].get_document(conn, "/test/data1/customer-001.json"))
+            self.assertIsNotNone(exampledb['content'].get_document(conn, "/test/data1/purchases/december/purchase-001.json"))
+            self.assertIsNotNone(exampledb['content'].get_document(conn, "/test/data1/customer-001.json"))
 
         finally:
-            exampledb[u'server'].remove(conn)
-            print("Pausing 15 seconds for server restart")
-            time.sleep(15)
-
-            exampledb[u'modules'].remove(conn)
-            exampledb[u'content'].remove(conn)
+            exampledb['server'].delete(conn)
+            exampledb['modules'].delete(conn)
+            exampledb['content'].delete(conn)
 
 if __name__ == "__main__":
     unittest.main()

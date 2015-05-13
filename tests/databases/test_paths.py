@@ -24,6 +24,7 @@ from __future__ import unicode_literals, print_function, absolute_import
 
 import unittest
 from marklogic.models import Database
+from marklogic.models.database.path import PathNamespace
 
 # "path-namespaces": {
 #     "path-namespace": [
@@ -43,13 +44,13 @@ class TestPaths(unittest.TestCase):
     def test_create_paths(self):
         db = Database(u'testdb')
 
-        self.assertNotIn(u'path-namespaces', db.config)
-        return_val = db.add_path_namespace("inv", "http://foo.bar.com/invoice")
+        self.assertNotIn('path-namespaces', db._config)
+        return_val = db.add_path_namespace(PathNamespace("inv", "http://foo.bar.com/invoice"))
 
         namespaces = db.path_namespaces()
         self.assertEqual(1, len(namespaces))
-        self.assertEqual("inv", namespaces[0][u'prefix'])
-        self.assertEqual('http://foo.bar.com/invoice', namespaces[0][u'namespace-uri'])
+        self.assertEqual("inv", namespaces[0].prefix())
+        self.assertEqual('http://foo.bar.com/invoice', namespaces[0].namespace_uri())
 
         self.assertEqual(db, return_val)
 
