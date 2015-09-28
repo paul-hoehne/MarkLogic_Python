@@ -2,6 +2,22 @@
 MarkLogic Management In Python
 ==============================
 
+Official MarkLogic Python Scripting Library !!!!
+================================================
+
+MarkLogic Engineering is providing a Python library for scripting.
+That means this library will continue to live here, and if something
+comes in, I'll look at fixing it, but new MarkLogic Python users
+should go to https://github.com/marklogic/python_api for their
+Python scripting needs.  I will be contributing to that repository and
+I encourage you to start with that repository.
+
+For those of you who have contributed, thank you!
+
+About
+=====
+
+
 Good news everybody! MarkLogic has a fantastic REST-based management
 API. You can use anything that produces or consumes REST to talk to the
 MarkLogic server and create database, manage clusters, add forests, etc.
